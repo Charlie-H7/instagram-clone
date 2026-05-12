@@ -1,9 +1,51 @@
 "use client"
 // import primary so that i can color div background with it
 import { useState } from "react";
+import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
-export default function AuthPanel() {
-    
+type shellPropTypes = {
+    supabase: SupabaseClient;
+    session: Session | null;
+    authLoading: boolean
+}
+
+export default function AuthPanel( {supabase, session, authLoading} : shellPropTypes ) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [busy, setBusy] = useState(false);
+    const [message, setMessage] = useState<string | null >(null);
+
+    async function handleLogin(e: React.FormEvent){
+        e.preventDefault(); // Needed to prevent the web page from loading
+        
+        setMessage(null);
+        setBusy(true);
+
+        // Send login data to get session
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email.trim(),
+            password: password
+        });
+        if(error) setMessage(error.message);
+        else setPassword("");
+    }
+
+    async function handleLogout(){
+        const error = await supabase.auth.signOut();
+        setBusy(true);
+    }
+
+    async function handleSignUp(){
+        const {error} = await supabase.auth.signUp({
+            email: email.trim(),
+            password: password
+        });
+        if(error) setMessage(error.message);
+        else setPassword("")
+    }
+
+    // Create function
+
     return(
         <div className="flex flex-row border-2 border-red-500 w-full h-full min-h-[calc(100vh-4rem)]">
 
@@ -28,14 +70,14 @@ export default function AuthPanel() {
 
             {/* Just added left padding instead of trying to fight with margins */}
             <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-red-500 bg-primary font-['Helvetica'] gap-6 px-6">
-                <div className="text-xl font-bold text-start">Login</div>
+                <div className="text-xl font-bold text-start" onSubmit={handleLogin}>Login</div>
                 <form action="" className="flex flex-col gap-4 w-full lg:max-w-[calc(100%-2rem)] border-1 border-blue-500">
                     <label id="">Username or email</label>
                     <input required type="text" name="" id="" placeholder="Enter your username or email" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     <label id="">Password</label>
                     <input type="password" name="" id="" placeholder="Enter your password" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                 </form>
-                <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Log In</button>
+                <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" onClick={() => console.log("ahllo")}>Log In</button>
             </div>
         </div>
     )
