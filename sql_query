@@ -1,0 +1,11 @@
+This file is solely for containing the commands that will be thrown into sql editor to setup
+
+create table if not exists public.Friends(
+
+)
+
+create table if not exists public.users(
+
+)
+
+create table if not exists public.posts
