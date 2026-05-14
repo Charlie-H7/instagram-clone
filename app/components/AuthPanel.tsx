@@ -14,6 +14,8 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
     const [password, setPassword] = useState("");
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null >(null);
+    const [login,setLogin] = useState<boolean>(true); // by default at the login screen
+    const [createAccount, setCreateAccount] = useState<boolean>(false); // if signup is selected render sign up screen
 
     async function handleLogin(e: React.FormEvent){
         e.preventDefault(); // Needed to prevent the web page from loading
