@@ -47,8 +47,12 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
     }
 
     // Create function
-
+if (login)
     return(
+        // Assume no session at this point (check this in shell)
+        // if login screen login
+        // otherwise use sign-up screen
+
         <div className="flex flex-row border-2 border-red-500 w-full h-full min-h-[calc(100vh-4rem)]">
 
 
@@ -74,13 +78,19 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-red-500 bg-primary font-['Helvetica'] gap-6 px-6">
                 <div className="text-xl font-bold text-start" onSubmit={handleLogin}>Login</div>
                 <form action="" className="flex flex-col gap-4 w-full lg:max-w-[calc(100%-2rem)] border-1 border-blue-500">
-                    <label id="">Username or email</label>
-                    <input required type="text" name="" id="" placeholder="Enter your username or email" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                    <label id="">Password</label>
-                    <input type="password" name="" id="" placeholder="Enter your password" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <label id="user">Username or email</label>
+                    <input required type="text" name="user" id="user" placeholder="Enter your username or email" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <label id="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                 </form>
                 <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" onClick={() => console.log("ahllo")}>Log In</button>
+                <button onClick={() => {setLogin(false); setCreateAccount(true)}}>Don't have an account? Create an account!</button>
             </div>
         </div>
     )
+
+    if(createAccount)
+        return(
+            <button onClick={() => {setLogin(true); setCreateAccount(false)}}>Already have an account? Log In!</button>
+        )
 }
