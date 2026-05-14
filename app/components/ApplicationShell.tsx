@@ -18,6 +18,12 @@ export default function ApplicationShell() {
     // const [ authLoading, setAuthLoading ] = useState(true);
     const [authLoading, setAuthLoading] = useState(() => supabase !== null);
 
+    // So Im thinking that i need a useEffect on this page on the dependency on either client or session
+    /* It should 
+    1. Check if there is a current clientsupabase or session
+    2. verify that
+    3. CLEANUP: cancel it, and get rid of the client (to go back to auth)
+    */
     useEffect(()=> {
         if (!supabase) {
             return;
