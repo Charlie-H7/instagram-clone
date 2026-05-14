@@ -1,6 +1,7 @@
 "use client"
 // import primary so that i can color div background with it
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 type shellPropTypes = {
@@ -10,12 +11,28 @@ type shellPropTypes = {
 }
 
 export default function AuthPanel( {supabase, session, authLoading} : shellPropTypes ) {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const mode = searchParams?.get("mode");
+    const login = mode !== "signup";
+    const createAccount = mode === "signup";
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null >(null);
-    const [login,setLogin] = useState<boolean>(true); // by default at the login screen
-    const [createAccount, setCreateAccount] = useState<boolean>(false); // if signup is selected render sign up screen
+
+    function setMode(nextMode: "login" | "signup") {
+        const url = new URL(window.location.href);
+
+        if (nextMode === "signup") {
+            url.searchParams.set("mode", "signup");
+        } else {
+            url.searchParams.delete("mode");
+        }
+
+        router.replace(url.pathname + url.search);
+    }
 
     async function handleLogin(e: React.FormEvent){
         e.preventDefault(); // Needed to prevent the web page from loading
@@ -81,9 +98,9 @@ if (login)
                     <label>Username or email</label>
                     <input required type="email" value={email} placeholder="Enter your username or email" onChange={(e) => setEmail(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     <label>Password</label>
-                    <input required type="password" value={email} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" onClick={() => console.log("ahllo")}>Log In</button>
-                    <button onClick={() => {setLogin(false); setCreateAccount(true)}}>Don't have an account? Create an account!</button>
+                    <input required type="password" value={password} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Log In</button>
+                    <button type="button" onClick={() => setMode("signup")}>Don't have an account? Create an account!</button>
                 </form>
             </div>
         </div>
@@ -91,18 +108,22 @@ if (login)
 
     if(createAccount)
         return(
-            <div>
-                <form onSubmit={handleSignUp}>
-                    <label>Email</label>
-                    <input type="email" placeholder="Enter your email"/>
-                    <label>Password</label>
-                    <input type="password" placeholder="Create a password"/>
-                    <label>Name</label>
-                    <input type="text"/>
-                    <label>Username</label>
-                    <input type="text"/>
-                    <button onClick={() => {setLogin(true); setCreateAccount(false)}}>Already have an account? Log In!</button>
-                </form>
+            <div className="flex flex-row border-2 border-red-500 w-full h-full min-h-[calc(100vh-4rem)]">
+                <div className="hidden text-3xl font-bold lg:flex flex-1 flex-col items-center justify-center border-2 border-red-500">
+                    Don't be a stranger! Make new friends and share your experiences with the world!
+                </div>
+
+                <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-red-500 bg-primary font-['Helvetica'] gap-6 px-6">
+                    <div className="text-xl font-bold text-start">Create Account</div>
+                    <form onSubmit={handleSignUp} className="flex flex-col gap-4 w-full lg:max-w-[calc(100%-2rem)] border-1 border-blue-500">
+                        <label>Email</label>
+                        <input required type="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <label>Password</label>
+                        <input required type="password" value={password} placeholder="Create a password" onChange={(e) => setPassword(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Sign Up</button>
+                        <button type="button" onClick={() => setMode("login")}>Already have an account? Log In!</button>
+                    </form>
+                </div>
             </div>
         )
 }
