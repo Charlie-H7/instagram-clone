@@ -48,6 +48,7 @@ export async function userSignUp( {supabase} : clientTypes, {name, username} : U
 
     if(error.error){
         console.log(error.error.message);
+        console.log("error at insert");
     }
 };
 
@@ -59,7 +60,7 @@ export async function userUpdate( {supabase}: clientTypes, {name, bio, is_privat
         is_private,
     });
 
-    if(error) console.log(error.message);
+    if(error) {console.log(error.message); console.log("err in updateUser");};
 };
 
 export async function userDelete( {supabase} : clientTypes, {id}: UserRow ){
