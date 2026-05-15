@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
+// Importing db functions
+import { userSignUp, userUpdate, userDelete } from "@/lib/users";
+
 type shellPropTypes = {
     supabase: SupabaseClient;
     session: Session | null;
@@ -21,7 +24,7 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
-    const [userName, setUserName] = useState("");
+    const [username, setUserName] = useState("");
 
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null >(null);
@@ -58,13 +61,24 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
         setBusy(true);
     }
 
-    async function handleSignUp(){
-        const {error} = await supabase.auth.signUp({
+    async function handleSignUp(e: React.FormEvent){
+        e.preventDefault();
+        setBusy(true);
+        setMessage(null);
+        
+        const {data, error} = await supabase.auth.signUp({
             email: email.trim(),
             password: password
         });
-        if(error) setMessage(error.message);
-        else setPassword("")
+        if(error){
+            setMessage(error.message);
+            setBusy(false);
+            return;
+        }
+
+        // update user data when an account is created
+        userSignUp({supabase}, {name, username});
+
     }
 
     // Create function
@@ -128,7 +142,7 @@ if (login)
                         <label>Name</label>
                         <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         <label>Username</label>
-                        <input required type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <input required type="text" value={username} onChange={(e) => setUserName(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
 
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Sign Up</button>
                         <button type="button" onClick={() => setMode("login")}>Already have an account? Log In!</button>

@@ -54,9 +54,19 @@ export default function ApplicationShell() {
 
     },[])
     
-    return (
-        <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-            <AuthPanel supabase={supabase} session={session} authLoading={authLoading} />
-        </div>
-    )
+        if (!session){
+            return (
+                <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+                    <AuthPanel supabase={supabase} session={session} authLoading={authLoading} />
+                </div>
+            );
+        }
+        else if(authLoading){
+            return(<div>Loading session</div>)
+        }
+        else{
+            //Load application
+            return(<div>This is the application screen</div>);
+        }
+        
 }
