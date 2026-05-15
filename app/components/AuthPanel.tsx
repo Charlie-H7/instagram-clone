@@ -17,8 +17,12 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
     const login = mode !== "signup";
     const createAccount = mode === "signup";
 
+    // Data being used for the database
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [userName, setUserName] = useState("");
+
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState<string | null >(null);
 
@@ -120,10 +124,22 @@ if (login)
                         <input required type="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                         <label>Password</label>
                         <input required type="password" value={password} placeholder="Create a password" onChange={(e) => setPassword(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
+                        <label>Name</label>
+                        <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <label>Username</label>
+                        <input required type="text" value={userName} onChange={(e) => setUserName(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Sign Up</button>
                         <button type="button" onClick={() => setMode("login")}>Already have an account? Log In!</button>
                     </form>
                 </div>
             </div>
         )
+    // supabase.from().select()
 }
+
+
+// hmmm so now that I ideally have signup "working" I need to think about how I could actually send over my states to the database and when
+// 1. figure out how a user is stored in auth
+// 2. figure out how a user can send to the db
