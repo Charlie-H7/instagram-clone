@@ -76,8 +76,9 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             return;
         }
 
+
         // update user data when an account is created
-        userSignUp({supabase}, {name, username});
+        userSignUp({supabase}, {id: data.user.id, name, username});
 
     }
 

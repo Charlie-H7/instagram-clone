@@ -40,8 +40,9 @@ type clientTypes = {
 };
 
 // make the server client
-export async function userSignUp( {supabase} : clientTypes, {name, username} : UserInsert){
+export async function userSignUp( {supabase} : clientTypes, {id, name, username} : UserRow){
     const error = await supabase.from("users").insert({
+        id,
         name,
         username,
     });
