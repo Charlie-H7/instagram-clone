@@ -76,9 +76,26 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             return;
         }
 
+        // Try to obtain the new user's id. `signUp` may not return a user
+        // (for example when email confirmation is required), so fall back
+        // to `auth.getUser()` which returns the currently authenticated user.
+        let userId: string | null = data?.user?.id ?? null;
 
-        // update user data when an account is created
-        userSignUp({supabase}, {id: data.user.id, name, username});
+        if (!userId) {
+            const { data: userData } = await supabase.auth.getUser();
+            userId = userData?.user?.id ?? null; // if userData is null return null
+        }
+
+        if (!userId) {
+            setMessage('Signup succeeded but there is no active session. Complete email confirmation or sign in before creating a profile.');
+            setBusy(false);
+            return;
+        }
+
+        // insert profile row into public.users using the authenticated id
+        await userSignUp({ supabase }, { id: userId, name, username } as any);
+        setMessage('Account created.');
+        setBusy(false);
 
     }
 

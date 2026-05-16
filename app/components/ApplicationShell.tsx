@@ -52,21 +52,38 @@ export default function ApplicationShell() {
             authListener.subscription.unsubscribe();
         }
 
-    },[])
+    },[supabase])
     
-        if (!session){
+        if(session) {
+            return(<div>This is the application screen</div>);
+        } 
+        else if(authLoading){
+            return(<div>Loading session</div>)    
+        }
+        else{
+            console.log("hallo");
             return (
                 <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
                     <AuthPanel supabase={supabase} session={session} authLoading={authLoading} />
                 </div>
             );
         }
-        else if(authLoading){
-            return(<div>Loading session</div>)
-        }
-        else{
-            //Load application
-            return(<div>This is the application screen</div>);
-        }
+        // if (!session){
+        //     return (
+        //         <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+        //             <AuthPanel supabase={supabase} session={session} authLoading={authLoading} />
+        //         </div>
+        //     );
+        // }
+        // else if(authLoading){
+        //     return(<div>Loading session</div>)
+        // }
+        // else{
+        //     //Load application
+        //     return(<div>This is the application screen</div>);
+        // }
+
+        // its bad to default to show screen first
+        // assume that theres a session first as otherwise there
         
 }
