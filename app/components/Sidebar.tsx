@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 // The main point of this is to have a sidebar that ROUTES (or not but is an option)
 export default function Sidebar(){
     return(
@@ -9,7 +10,7 @@ export default function Sidebar(){
                 <nav className="space-y-2">
                     <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a>
                     <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a>
-                    <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</a>
+                    <Link href="u/charlie" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</Link>
                 </nav>
 
                 <div className="mt-auto">
