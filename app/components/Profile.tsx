@@ -1,5 +1,7 @@
 "use_client"
 
 export default function Profile(){
-    return (null);
+    return(
+        <div>Profile</div>
+    );
 }

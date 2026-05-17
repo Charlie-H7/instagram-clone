@@ -3,7 +3,7 @@
 import { use, useEffect, useState, useMemo } from "react";
 
 import AuthPanel from "../components/AuthPanel"
-import Application from "./Appplication"
+import Application from "./Application"
 import { create } from "domain";
 
 
