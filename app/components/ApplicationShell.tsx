@@ -2,7 +2,8 @@
 
 import { use, useEffect, useState, useMemo } from "react";
 
-import AuthPanel from "../components/AuthPanel";
+import AuthPanel from "../components/AuthPanel"
+import Application from "./Appplication"
 import { create } from "domain";
 
 
@@ -36,7 +37,7 @@ export default function ApplicationShell() {
             if (cancelled) {
                 return;
             }
-            setSession(session);
+            setSession(data.session);
             setAuthLoading(false);
         });
 
@@ -55,8 +56,76 @@ export default function ApplicationShell() {
     },[supabase])
     
         if(session) {
-            return(<div>This is the application screen</div>);
-        } 
+            // return(<div>This is the application screen</div>);
+            return(<Application/>)
+        }
+//             return(
+//                 <div className="min-h-screen">
+//     <aside className="fixed left-0 top-0 h-screen w-64 bg-gray-800 text-white p-4 flex flex-col">
+//         <h2 className="text-2xl font-bold mb-6">Logo</h2>
+
+//         <nav className="space-y-2">
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Dashboard
+//             </a>
+
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Settings
+//             </a>
+
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Profile
+//             </a>
+//         </nav>
+
+//         <div className="mt-auto">
+//             <a href="#" className="block px-4 py-2 text-sm text-slate-400">
+//                 Logout
+//             </a>
+//         </div>
+//     </aside>
+// </div>
+//             )
+//             <div className="flex min-h-screen">
+//     <aside className="w-64 bg-gray-800 text-white p-4 flex flex-col">
+//         <h2 className="text-2xl font-bold mb-6">Logo</h2>
+
+//         <nav className="space-y-2">
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Dashboard
+//             </a>
+
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Settings
+//             </a>
+
+//             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+//                 Profile
+//             </a>
+//         </nav>
+
+//         <div className="mt-auto">
+//             <a href="#" className="block px-4 py-2 text-sm text-slate-400">
+//                 Logout
+//             </a>
+//         </div>
+//     </aside>
+// </div>                
+            // <div className="flex min-h-screen">
+            //         <aside className="w-64 bg-gray-800 text-white p-4">
+            //             <h2 className="text-2xl font-bold mb-6">Logo</h2>
+            //             <nav className="space-y-2">
+            //             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Dashboard</a>
+            //             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a>
+            //             <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</a>
+            //             </nav>
+            //                 <div className="mt-auto">
+            //                     <a href="#" className="block px-4 py-2 text-sm text-slate-400">Logout</a>
+            //                 </div>
+            //         </aside>
+            //     </div>
+            
+         
         else if(authLoading){
             return(<div>Loading session</div>)    
         }
