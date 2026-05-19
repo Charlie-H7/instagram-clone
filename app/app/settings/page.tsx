@@ -16,6 +16,12 @@ export default async function Page() {
         .select("username,name,bio")
         .single();
 
+    if (!profile) {
+        throw new Error("Profile not found");
+    }
+
+    // Type '{ username: any; name: any; bio: any; } | null' is not assignable to type 'Profile'.
+//   Type 'null' is not assignable to type 'Profile' (Solution above in case profile is blank)
     return <SettingsForm profile={profile} />;
     
 }

@@ -3,10 +3,18 @@
 
 import { useState, useEffect, useMemo  } from "react";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
-import { userUpdate } from "@/lib/users";
+import { userUpdate, type UserUpdate } from "@/lib/users";
+
 
 // 'async' not allowed in client components
-export default function SettingsForm( {profile} ){
+// const UserType = UserUpdate
+type Profile = {
+    username: string | null;
+    name: string | null;
+    bio: string | null;
+};
+
+export default function SettingsForm( { profile }: {profile: Profile} ){
     const supabase = useMemo(() => createBrowserSupabaseClient(), []);
     
     const [name, setName] = useState(profile.name);
