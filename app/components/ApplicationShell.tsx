@@ -5,6 +5,7 @@ import { use, useEffect, useState, useMemo } from "react";
 import AuthPanel from "../components/AuthPanel"
 import Application from "./Application"
 import { create } from "domain";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
@@ -14,6 +15,7 @@ import{ Session } from "@supabase/supabase-js";
 // Need to make new projects
 
 export default function ApplicationShell() {
+    const router = useRouter();
     const supabase = useMemo(() => createBrowserSupabaseClient(), [])
     const [session, setSession] = useState<Session | null>(null);
     // const [ authLoading, setAuthLoading ] = useState(true);
@@ -54,10 +56,17 @@ export default function ApplicationShell() {
         }
 
     },[supabase])
+
+        useEffect(() => {
+            if (session) {
+                router.push("/app"); // THIS IS THE IMPORTANT REROUTING
+            }
+        }, [session, router]);
     
         if(session) {
-            // return(<div>This is the application screen</div>);
-            return(<Application/>)
+            // return(<div>This is the application screen</div>); <app would have been here>
+            // router.push("/feed");
+            return(null);
         }
 //             return(
 //                 <div className="min-h-screen">

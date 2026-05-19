@@ -68,3 +68,5 @@ export async function userDelete( {supabase} : clientTypes, {id}: UserRow ){
     const {error} = await supabase.from("users").delete().eq("id", id); // Where id is the passed in id
     if(error) console.log(error.message);
 }
+
+// -----

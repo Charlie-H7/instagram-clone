@@ -53,7 +53,11 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             password: password
         });
         if(error) setMessage(error.message);
-        else setPassword("");
+        else setPassword("")
+
+        // if (!error) {
+        //     router.push("/feed");
+        // };
     }
 
     async function handleLogout(){
@@ -75,6 +79,9 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             setBusy(false);
             return;
         }
+        // if (!error) {
+        //     router.push("/feed");
+        // }
 
         // Try to obtain the new user's id. `signUp` may not return a user
         // (for example when email confirmation is required), so fall back
