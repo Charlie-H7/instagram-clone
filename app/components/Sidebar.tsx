@@ -3,6 +3,23 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
+/*
+🧊 The Server Component is the “cheat code”
+
+Server Components are the ONLY place where this is allowed:
+
+wait for data
+→ THEN render UI
+→ THEN send to browser
+
+So instead of:
+
+“fix timing in browser”
+
+you actually do:
+
+“move timing to server”
+*/
 
 // The main point of this is to have a sidebar that ROUTES (or not but is an option)
 export default async function Sidebar( { /*username*/ } ){
