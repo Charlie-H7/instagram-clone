@@ -27,8 +27,38 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
     const [error, setError] = useState<boolean>(false) // no error at first
     const [message, setMessage] = useState("")
 
-    // const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(null);
 
+    // Need a helper function, that takes in a form. 
+    // 1. Prevents refresh on submit
+    // 2. get the file and name from the form
+    // 3. send the file and file name convention to supabase
+    
+    // The exported function cannot be async itself for client comps (good thing you can for functions inside :) )
+    async function handlePfpSubmit(file: File) {
+
+        const {data: {user}} = await supabase.auth.getUser();
+
+        if(!file || !user) return;
+
+        // Unique file path
+        const filePath = `${user!.id}/${crypto.randomUUID()}`;
+
+        
+        const { data, error } = await supabase.storage
+        .from("pfp")
+        .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false,
+        });
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        console.log(data);
+    }
 
     //We need to track the actual values to have like 
                 // useEffect(()=>{
@@ -72,13 +102,30 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
                 {/*  */}
                 <h1>Edit profile</h1>
                 {/* change_photo */}
-                <div className="flex">
+                <div className="flex gap-8">
                     <div>profile image-tk</div>
                     <div className="flex flex-col">
                         <div>{profile.name}</div>
                         <div>{profile.username}</div>
                     </div>
-                    <div>Button</div>
+
+
+                    <label htmlFor="imageUpload">Select an image:</label>
+                    <input 
+                        type="file" 
+                        id="imageUpload" 
+                        name="imageUpload" 
+                        accept="image/*" 
+                        onChange={(e) => {
+                            const selectedFile = e.target.files?.[0];
+                            if (selectedFile) { // If a file was actually selected; otherwise dont change the image set state
+                                // setFile(selectedFile);
+                                handlePfpSubmit(selectedFile);
+                            }
+                    }}/>
+
+
+
                 </div>
 
                 {/* I feel like the image submission should be its own thing as those changes are reflected on screen, so state(img) = curr {like i was trying to do with name} */}
@@ -95,6 +142,7 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Submit</button>
                 </form>
             </div>
+
             <div>
                 {!error ? 
                     (<div>Your profile has been submitted</div>)
@@ -103,10 +151,6 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
 
 
 
-            <form>
-                <label htmlFor="imageUpload">Select an image:</label>
-                <input type="file" id="imageUpload" name="imageUpload" accept="image/*" />
-            </form>
 
 
         </div>
