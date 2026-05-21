@@ -20,8 +20,12 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
     const [name, setName] = useState(profile.name);
     const [username, setUserName] = useState(""); // for right now username is immutable
     const [bio, setBio] = useState<string>("");
+    const [is_private, setPrivate] = useState(false);
     const [cancelled, setCancelled] = useState(false);
     const [pfp, setPfp] = useState<string>("");
+
+    const [error, setError] = useState<boolean>(false) // no error at first
+    const [message, setMessage] = useState("")
 
 
     //We need to track the actual values to have like 
@@ -48,6 +52,15 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
 
     // const data = supabase.from().select()
     // or get helper
+    
+    // const avatarFile = event.target.files[0]
+    // const { data, error } = await supabase
+    // .storage
+    // .from('avatars')
+    // .upload('public/avatar1.png', avatarFile, {
+    //     cacheControl: '3600',
+    //     upsert: false
+    // })
 
     return(
         <div className="mx-auto">
@@ -65,19 +78,35 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
                     </div>
                     <div>Button</div>
                 </div>
-                <div>
-                    <div>Change Bio</div>
-                    <textarea onChange={(e) => {setName(e.target.value)}} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-                <div>
-                    <div>
-                        <label className="switch">
-                        <input type="dropdown" />
-                        <span className="slider"></span>
-                        </label>
-                    </div>
-                </div>
+
+                {/* I feel like the image submission should be its own thing as those changes are reflected on screen, so state(img) = curr {like i was trying to do with name} */}
+                <form onSubmit={async (e) => {
+                    e.preventDefault(); 
+                    const res = setError(await userUpdate({supabase}, {bio}));}}>
+                        <div>
+                            <div>Change Bio</div>
+                            <textarea onChange={(e) => {setBio(e.target.value)}} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div>
+                           hallo 
+                        </div>
+                        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Submit</button>
+                </form>
             </div>
+            <div>
+                {!error ? 
+                    (<div>Your profile has been submitted</div>)
+                    : (<div> Something wrong has occured.</div>)}
+            </div>
+
+
+
+            <form>
+                <label htmlFor="imageUpload">Select an image:</label>
+                <input type="file" id="imageUpload" name="imageUpload" accept="image/*" />
+            </form>
+
+
         </div>
     );
 }

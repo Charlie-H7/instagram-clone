@@ -53,7 +53,7 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
             password: password
         });
         if(error) setMessage(error.message);
-        else setPassword("")
+        else setPassword("");
 
         // if (!error) {
         //     router.push("/feed");
@@ -182,3 +182,5 @@ if (login)
 // hmmm so now that I ideally have signup "working" I need to think about how I could actually send over my states to the database and when
 // 1. figure out how a user is stored in auth
 // 2. figure out how a user can send to the db
+
+// https://nextjs.org/docs/app/api-reference/functions/use-router
