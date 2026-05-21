@@ -12,11 +12,12 @@ drop policy if exists "Users can update their own files" on storage.objects;
 -- [2] → avatar.png
 -- }
 
-create policy "Public read access for pfp"
-on storage.objects
-for select
-to public
-using (bucket_id = 'pfp');
+-- Dont need select policies for public tables !!!
+    -- create policy "Public read access for pfp"
+    -- on storage.objects
+    -- for select
+    -- to public
+    -- using (bucket_id = 'pfp');
 
 
 -- This should only be the case for users to be able to only upload their own shit man
@@ -73,4 +74,4 @@ with check (
 ---------------
 
 --  Policies for posts table 
-create policy "Users can view post images if they" -- wow this ones a bit trickier as currently I have post viewing logic within, the table but maybe it should have gone here as opposed to here (then again the relational tables exist ther {maybe I can still access them from her})
+-- create policy "Users can view post images if they" -- wow this ones a bit trickier as currently I have post viewing logic within, the table but maybe it should have gone here as opposed to here (then again the relational tables exist ther {maybe I can still access them from her})
