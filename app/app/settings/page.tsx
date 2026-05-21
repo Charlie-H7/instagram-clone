@@ -3,7 +3,7 @@
 import { useMemo  } from "react"; // No use effect in server pages
 import { createClient } from "@/lib/supabase/server";
 import { userUpdate } from "@/lib/users";
-import SettingsForm from "../settings/SettingsForm"
+import SettingsForm from "./components/SettingsForm"
 
 // 'async' not allowed in client components (well it is but a bit more complicated than that)    
     

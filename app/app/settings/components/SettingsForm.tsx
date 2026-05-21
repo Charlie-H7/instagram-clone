@@ -27,6 +27,8 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
     const [error, setError] = useState<boolean>(false) // no error at first
     const [message, setMessage] = useState("")
 
+    // const [file, setFile] = useState<File | null>(null);
+
 
     //We need to track the actual values to have like 
                 // useEffect(()=>{
