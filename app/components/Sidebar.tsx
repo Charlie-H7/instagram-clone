@@ -4,7 +4,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 /*
-🧊 The Server Component is the “cheat code”
+The Server Component is the “cheat code”
 
 Server Components are the ONLY place where this is allowed:
 
