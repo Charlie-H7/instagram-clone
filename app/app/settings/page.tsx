@@ -13,7 +13,7 @@ export default async function Page() {
 
     const { data: profile } = await supabase
         .from("users")
-        .select("username,name,bio")
+        .select("username,name,bio,pfp_path")
         .single();
 
     if (!profile) {

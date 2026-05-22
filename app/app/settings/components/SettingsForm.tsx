@@ -12,22 +12,67 @@ type Profile = {
     username: string | null;
     name: string | null;
     bio: string | null;
+    pfp_path: string;
 };
 
 export default function SettingsForm( { profile }: {profile: Profile} ){
     const supabase = useMemo(() => createBrowserSupabaseClient(), []);
+    // const { data } = await supabase.auth.getUser();
     
     const [name, setName] = useState(profile.name);
     const [username, setUserName] = useState(""); // for right now username is immutable
     const [bio, setBio] = useState<string>("");
     const [is_private, setPrivate] = useState(false);
     const [cancelled, setCancelled] = useState(false);
-    const [pfp, setPfp] = useState<string>("");
+    const [pfp, setPfp] = useState<string>(profile.pfp_path);
 
-    const [error, setError] = useState<boolean>(false) // no error at first
+    const [err, setError] = useState<boolean>(false) // no error at first
     const [message, setMessage] = useState("")
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(null); // technically the default will be the original path that exists in db as a default
+
+    console.log(`profile_prop: ${profile.pfp_path}`);
+
+    useEffect(() => {
+
+        async function fetch_pfp(){
+            const { data } = await supabase.auth.getUser();
+            const { data: init_q, error } = await supabase.from("users").select("username,name,pfp_path").eq("id", data.user?.id).single();
+            if(!error){
+                setPfp(init_q.pfp_path); // get the current one
+                console.log(`hallo init_q.pfp: ${init_q.pfp_path}`)
+
+                // move here
+                
+                // move here
+            }
+            else console.log("err, no thing");
+        }
+        
+        fetch_pfp();
+        const { data: storage_obj } = supabase.storage
+        .from("pfp")
+        .getPublicUrl(pfp);
+
+        const url = storage_obj.publicUrl;
+        console.log(`url ${url}`);
+        setPfp(url);
+        console.log(`pfp_url: ${pfp}`);
+
+    },[]);
+
+    // const { data: init_q, error } = await supabase.from("users").select("username,name,pfp_path").eq("id", data.user?.id).single();
+    // if(!error){
+    //     setPfp(init_q.pfp_path);
+    // }
+
+    // const { data: storage_obj } = supabase.storage
+    // .from("pfp")
+    // .getPublicUrl(pfp);
+    
+    // const url = storage_obj.publicUrl;
+    // setPfp(url);
+
 
     // Need a helper function, that takes in a form. 
     // 1. Prevents refresh on submit
@@ -57,7 +102,7 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
             return;
         }
 
-        console.log(data);
+        // console.log(data);
     }
 
     //We need to track the actual values to have like 
@@ -104,6 +149,8 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
                 {/* change_photo */}
                 <div className="flex gap-8">
                     <div>profile image-tk</div>
+                    {/* <img src="https://qznrktvvosorwedhyjjg.supabase.co/storage/v1/object/public/pfp/default_avatar.jpg" alt="default pfp" className="w-16 h-16 rounded-full"/> */}
+                    <img src={pfp} alt="default pfp" className="w-16 h-16 rounded-full"/>
                     <div className="flex flex-col">
                         <div>{profile.name}</div>
                         <div>{profile.username}</div>
@@ -144,7 +191,7 @@ export default function SettingsForm( { profile }: {profile: Profile} ){
             </div>
 
             <div>
-                {!error ? 
+                {!err ? 
                     (<div>Your profile has been submitted</div>)
                     : (<div> Something wrong has occured.</div>)}
             </div>
