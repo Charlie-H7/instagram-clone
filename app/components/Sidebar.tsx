@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import LogoutButton from "../app/components/LogoutButton";
 
 /*
 The Server Component is the “cheat code”
@@ -36,6 +37,7 @@ export default async function Sidebar( { /*username*/ } ){
         // Maybe return to login to get correc session
     }
     
+
     const profile_path = `/app/u/${profile?.username}`;
         
     return(
@@ -53,7 +55,8 @@ export default async function Sidebar( { /*username*/ } ){
                 </nav>
 
                 <div className="mt-auto">
-                    <a href="#" className="block px-4 py-2 text-sm text-slate-400">Logout</a>
+                    {/* <a href="#" className="block px-4 py-2 text-sm text-slate-400">Logout</a> */}
+                    <LogoutButton />
                 </div>
             </aside>
         </div>
