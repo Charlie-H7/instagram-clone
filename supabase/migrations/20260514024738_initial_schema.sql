@@ -22,7 +22,7 @@ CREATE TABLE if not exists public.posts(
     -- maybe would need like a thing for photos, a cdn??
     user_id uuid not null REFERENCES public.users(id) on delete cascade, -- this means if a user is deleted all their posts will be deleted as well
     caption TEXT not null,
-    image_path TEXT not null, -- A image is required for each post
+    image_path TEXT not null default 'default_avatar.jpg', -- A image is required for each post
     date timestamptz not null default now()
 );
 
