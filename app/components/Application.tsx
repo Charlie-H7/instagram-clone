@@ -1,7 +1,7 @@
 // "use client";
 
 import Sidebar from "./Sidebar";
-import Posts from "./Posts";
+import Posts from "../app/components/Posts";
 // Actually I think in this case it would make more sense to work with routes on a profile/post basis
 import { useEffect, useState } from "react"; // use to track data from 
 import { useRouter, useSearchParams } from "next/navigation"
