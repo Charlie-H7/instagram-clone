@@ -12,6 +12,12 @@ export type PostRow = {
     date: string;
 }
 
+export type PostFetch = {
+    user_id: string;
+    image_path: string;
+    // will include other data I actually need later
+}
+
 // 1. Need to be able to submit posts to the db for others to see
 // 2. Need to be able to fetch posts based on if you are following people or not
 
@@ -47,6 +53,7 @@ export async function uploadPost(supabase: SupabaseClient, {id, user_id, image_p
 
 // New version using a view because supabase js sucks at complicated joins
 export async function fetchFeedPosts(supabase: SupabaseClient){
+    // const { data, error } = await supabase.from("feed_posts").select("*");
     const { data, error } = await supabase.from("feed_posts").select("*");
     
     if(error){
