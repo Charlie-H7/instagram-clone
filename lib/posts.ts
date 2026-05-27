@@ -13,8 +13,12 @@ export type PostRow = {
 }
 
 export type PostFetch = {
-    user_id: string;
+    // id: string; // post id
+    username: string;
+    user_id?: string;
     image_path: string;
+    pfp_path: string;
+    like_count: number;
     // will include other data I actually need later
 }
 
