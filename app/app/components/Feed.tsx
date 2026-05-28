@@ -44,7 +44,8 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
                 <div className="items-center">{username}</div>
             </div>
             {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
-            <div className="relative w-30 h-30">
+            {/* <div className="relative w-50 h-50"> */}
+            <div className="relative w-full">
                 <Image src={post_public_url} alt="Post image" fill />
             </div>
             <div className="flex flex-row">

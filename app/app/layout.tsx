@@ -62,8 +62,9 @@ export default async function AppLayout({
             {/* <main className="flex-1 ml-20 border border-red-500"> have the main body always be center screen some fixed width of the application */}
             {/* <main className="flex-1 ml-20 border border-red-500 max-w-2xl mx-auto"> have the main body always be center screen some fixed width of the application */}
             <main>
-                <div className="max-w-2xl mx-auto">
+                {/* <div className="max-w-2xl mx-auto"> */}
                 {/* <div className="max-w-4xl mx-auto"> */}
+                <div className="w-full max-w-2xl mx-auto">
                     {children}
                 </div>
             </main>
