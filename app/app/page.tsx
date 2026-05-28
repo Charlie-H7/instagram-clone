@@ -13,8 +13,8 @@ export default async function Home(){
     console.log(data);
     console.log("/app");
     return(
-        <div className="flex flex-col flex-0 justify-center items-center gap-2">
-            
+        <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full bg-red-500">
+            {/* max-w-[630px] */}
             {/* {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} user_id={entry.user_id} image_path={entry.image_path}/>) */}
             {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} image_path={entry.image_path} pfp_path={entry.pfp_path} like_count={entry.like_count}/>)
             // widget like comment + bookmark; as row

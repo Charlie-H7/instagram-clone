@@ -25,26 +25,34 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
     console.log(post_public_url)
 
     return(
-        <div>
+        <div className="">
             {/* Name + picture in row*/}
 
             {/* <div>{user_id}</div> */}
             {/* <div>{image_path}</div> */}
-            <div>{username}</div>
             {/* <div>{pfp_path}</div> */}
             {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
-            <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                <Image
-                    src={pfp_public_url}
-                    alt={`${username} pfp`}
-                    fill
-                    className="object-cover"
-                />
+            <div className="flex flex-row items-center">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                    <Image
+                        src={pfp_public_url}
+                        alt={`${username} pfp`}
+                        fill
+                        className="object-cover"
+                        />
+                </div>
+                <div className="items-center">{username}</div>
             </div>
+            {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
             <div className="relative w-30 h-30">
                 <Image src={post_public_url} alt="Post image" fill />
             </div>
-            <div>{like_count}</div>
+            <div className="flex flex-row">
+                <div>like icon with on click</div>
+                <div>{like_count}</div>
+                <div>comment button</div>
+                <div>Bookmark</div>
+            </div>
             {/* // widget like comment + bookmark; as row
             // top comment section col */}
         </div>
