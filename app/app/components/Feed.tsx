@@ -5,8 +5,9 @@ import Image from "next/image";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-export default function Feed({username, image_path, pfp_path, like_count}: PostFetch){
+export default function Feed({username, image_path, pfp_path, like_count, is_liked}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
+    const [isLiked, setLiked] = useState<boolean>(is_liked);
     // const obj = map
     // make a storage object for supabase
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
@@ -32,7 +33,7 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
             {/* <div>{image_path}</div> */}
             {/* <div>{pfp_path}</div> */}
             {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center bg-blue-500">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
                     <Image
                         src={pfp_public_url}
@@ -44,15 +45,29 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
                 <div className="items-center">{username}</div>
             </div>
             {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
+            {/* <div className="relative w-full h-[32rem] bg-slate-100"> */}
             <div className="relative w-full h-[32rem] bg-slate-100">
-                <Image src={post_public_url} alt="Post image" fill className="object-cover" />
+                {/* <Image src={post_public_url} alt="Post image" fill className="object-cover" /> */}
+                <Image src={post_public_url} alt="Post image" fill className="" />
             </div>
-            <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
+
+            {/* Post widgets */}
+            {/* <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
                 <div>like icon with on click</div>
                 <div>{like_count}</div>
                 <div>comment button</div>
                 <div>Bookmark</div>
+            </div> */}
+            {/* Post widgets */}
+
+
+
+            {/* Updated post widgets */}
+
+            <div>
+                {is_liked ? "❤️" : "🤍"}
             </div>
+
             {/* // widget like comment + bookmark; as row
             // top comment section col */}
         </div>

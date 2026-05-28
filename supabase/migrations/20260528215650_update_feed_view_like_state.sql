@@ -1,0 +1,40 @@
+drop view if exists feed_posts;
+
+create view feed_posts as
+select 
+    p.*,
+    f.following_id,
+    u.name,
+    u.username,
+    u.pfp_path,
+
+    coalesce(lc.like_count, 0) as like_count,
+
+    exists (
+        select 1
+        from likes l
+        where l.post_id = p.id
+        and l.user_id = auth.uid()
+    ) as is_liked
+
+from posts as p
+
+join following as f 
+    on f.following_id = p.user_id
+
+join users as u 
+    on u.id = f.following_id
+
+left join (
+    select post_id, count(*) as like_count
+    from likes
+    group by post_id
+) lc on lc.post_id = p.id
+
+where (
+    auth.uid() = f.follower_id
+    and f.approved = true
+    and p.user_id != auth.uid()
+)
+
+order by p.date desc;

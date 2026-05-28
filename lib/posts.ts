@@ -19,6 +19,7 @@ export type PostFetch = {
     image_path: string;
     pfp_path: string;
     like_count: number;
+    is_liked: boolean;
     // will include other data I actually need later
 }
 
