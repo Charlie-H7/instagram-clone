@@ -25,7 +25,7 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
     console.log(post_public_url)
 
     return(
-        <div className="">
+        <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
             {/* Name + picture in row*/}
 
             {/* <div>{user_id}</div> */}
@@ -44,11 +44,10 @@ export default function Feed({username, image_path, pfp_path, like_count}: PostF
                 <div className="items-center">{username}</div>
             </div>
             {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
-            {/* <div className="relative w-50 h-50"> */}
-            <div className="relative w-full">
-                <Image src={post_public_url} alt="Post image" fill />
+            <div className="relative w-full h-[32rem] bg-slate-100">
+                <Image src={post_public_url} alt="Post image" fill className="object-cover" />
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
                 <div>like icon with on click</div>
                 <div>{like_count}</div>
                 <div>comment button</div>
