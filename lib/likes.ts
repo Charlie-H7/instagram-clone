@@ -23,7 +23,7 @@ type likeTypes = {
 export async function likePost( supabase: SupabaseClient,  {user_id, post_id}: likeTypes){
     // if they have, add it
         const { error } = await supabase.from("likes").insert({user_id, post_id});
-        if (error){ console.log(error.message); return;}
+        if (error){ console.log(error.message); return(error);}
 }
 
 export async function unlikePost( supabase: SupabaseClient, {user_id, post_id}: likeTypes){
@@ -32,7 +32,7 @@ export async function unlikePost( supabase: SupabaseClient, {user_id, post_id}: 
         .eq("user_id",user_id)
         .eq("post_id", post_id); // composite key so both conditions should hold
         
-        if(error){ console.log(error.message); return;}
+        if(error){ console.log(error.message); return(error);}
     
 }
 

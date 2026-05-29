@@ -13,9 +13,9 @@ export type PostRow = {
 }
 
 export type PostFetch = {
-    // id: string; // post id
+    id: string; // post id
     username: string;
-    user_id?: string;
+    user_id: string;
     image_path: string;
     pfp_path: string;
     like_count: number;

@@ -7,25 +7,30 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { Heart, MessageCircle } from "lucide-react";
 import { unlikePost, likePost } from "@/lib/likes";
 
-export default function Feed({username, image_path, pfp_path, like_count, is_liked}: PostFetch){
+export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
-    const user_id = supabase.auth.getUser();
+    
     const [isLiked, setLiked] = useState<boolean>(is_liked);
     // const obj = map
     // make a storage object for supabase
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
 
-    async function handleLike(user_id: string, post_id: string) {
+    async function handleLike() {
         const prev_liked = isLiked;
-        
-        if (is_liked) {
-            await unlikePost(supabase, { user_id, post_id });
-            setLiked(false);
+        let error;
+
+        // update the liked state so changes show up
+        setLiked(!prev_liked);
+        console.log(`state like ${isLiked}; prev_liked ${prev_liked}`);
+
+        if (prev_liked) {
+            error = await unlikePost(supabase, { user_id, post_id });
         } 
         else {
-            await likePost(supabase, { user_id, post_id });
-            setLiked(true);
+            error = await likePost(supabase, { user_id, post_id });
         }
+
+        if(error) {setLiked(prev_liked);} //If there is a problem with the liked db, reset the liked status
     }
 
 
