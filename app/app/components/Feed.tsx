@@ -4,14 +4,31 @@ import { useMemo, useState } from "react"
 import Image from "next/image";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
-import { Heart } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
+import { unlikePost, likePost } from "@/lib/likes";
 
 export default function Feed({username, image_path, pfp_path, like_count, is_liked}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
+    const user_id = supabase.auth.getUser();
     const [isLiked, setLiked] = useState<boolean>(is_liked);
     // const obj = map
     // make a storage object for supabase
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
+
+    async function handleLike(user_id: string, post_id: string) {
+        const prev_liked = isLiked;
+        
+        if (is_liked) {
+            await unlikePost(supabase, { user_id, post_id });
+            setLiked(false);
+        } 
+        else {
+            await likePost(supabase, { user_id, post_id });
+            setLiked(true);
+        }
+    }
+
+
     const { data: pfp_storage_obj } = supabase.storage
     .from("pfp")
     .getPublicUrl(pfp_path)
@@ -67,12 +84,16 @@ export default function Feed({username, image_path, pfp_path, like_count, is_lik
 
             <div className="flex flex-row gap-4 px-4 py-4 text-sm">
                 {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
-                {isLiked ?
-                    <Heart className="w-7 h-7 fill-red-500 text-primary-border"/> :
-                    <Heart />
-                }
+                <button onClick={handleLike}>
+                    {isLiked ?
+                        <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
+                        <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
+                    }
+                </button>
                 <div>{like_count} likes</div>
-                <div>comment button</div>
+                {/* <div>comment button</div> */}
+                <MessageCircle />
+                <div>Comment</div>
                 <div>Bookmark</div>
             </div>
 
