@@ -11,12 +11,16 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
     
     const [isLiked, setLiked] = useState<boolean>(is_liked);
+    const [likeCount, setLikeCount] = useState<number>(like_count);
     // const obj = map
     // make a storage object for supabase
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
 
+    // make state updates before async functions to prevent like the 
     async function handleLike() {
         const prev_liked = isLiked;
+        const prev_like_count = likeCount;
+
         let error;
 
         // update the liked state so changes show up
@@ -24,13 +28,15 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
         console.log(`state like ${isLiked}; prev_liked ${prev_liked}`);
 
         if (prev_liked) {
+            setLikeCount(likeCount-1);
             error = await unlikePost(supabase, { user_id, post_id });
         } 
         else {
+            setLikeCount(likeCount+1);
             error = await likePost(supabase, { user_id, post_id });
         }
 
-        if(error) {setLiked(prev_liked);} //If there is a problem with the liked db, reset the liked status
+        if(error) {setLiked(prev_liked); setLikeCount(prev_like_count)} //If there is a problem with the liked db, reset the liked status
     }
 
 
@@ -95,7 +101,7 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
                         <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
                     }
                 </button>
-                <div>{like_count} likes</div>
+                <div>{likeCount} likes</div>
                 {/* <div>comment button</div> */}
                 <MessageCircle />
                 <div>Comment</div>
