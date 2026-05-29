@@ -10,8 +10,6 @@ import { unlikePost, likePost } from "@/lib/likes";
 
 export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
-    const [showModal, setShowModal] = useState(false);
-    
     const [isLiked, setLiked] = useState<boolean>(is_liked);
     const [likeCount, setLikeCount] = useState<number>(like_count);
     // const obj = map
@@ -107,37 +105,15 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
                 <div>{likeCount} likes</div>
                 
                 {/* <div>comment button</div> */}
-                <button aria-label="Open post" onClick={() => setShowModal(true)}>
+                <Link href={`/app/p/${post_id}`} aria-label="Open post">
                     <MessageCircle />
-                </button>
+                </Link>
                 <div>Comment</div>
                 <div>Bookmark</div>
             </div>
 
             {/* // widget like comment + bookmark; as row
             // top comment section col */}
-        {showModal && (
-            <PostModal postId={post_id} imageUrl={post_public_url} onClose={() => setShowModal(false)} />
-        )}
-
         </div>
     );
-}
-
-// Client-side modal rendered by the Feed card itself (works without parallel routes)
-function PostModal({ postId, imageUrl, onClose }: { postId: string | number | undefined; imageUrl: string; onClose: () => void }){
-    return (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg w-[90vw] max-w-3xl text-center">
-                <h2 className="text-lg font-semibold mb-2">Post</h2>
-                <p className="text-sm text-gray-500 mb-4">Post ID: {postId}</p>
-                <div className="relative w-full h-[60vh] mb-4">
-                    <Image src={imageUrl} alt="Post image" fill className="object-contain" />
-                </div>
-                <div className="flex justify-center gap-4">
-                    <button className="px-4 py-2 bg-gray-200 rounded" onClick={onClose}>Close</button>
-                </div>
-            </div>
-        </div>
-    )
 }
