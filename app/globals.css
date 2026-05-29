@@ -5,12 +5,14 @@
   --foreground: #171717;
   /* --primary: #857a7d; */
   --primary: #222222;
+  --primary-border: hsl(330, 85%, 60%); /* adding my own styles to tailwind */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-primary-border: var(--primary-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

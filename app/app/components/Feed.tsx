@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import Image from "next/image";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import { Heart } from "lucide-react";
 
 export default function Feed({username, image_path, pfp_path, like_count, is_liked}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
@@ -26,14 +27,14 @@ export default function Feed({username, image_path, pfp_path, like_count, is_lik
     console.log(post_public_url)
 
     return(
-        <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
             {/* Name + picture in row*/}
 
             {/* <div>{user_id}</div> */}
             {/* <div>{image_path}</div> */}
             {/* <div>{pfp_path}</div> */}
             {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
-            <div className="flex flex-row items-center bg-blue-500">
+            <div className="flex flex-row items-center">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
                     <Image
                         src={pfp_public_url}
@@ -64,8 +65,15 @@ export default function Feed({username, image_path, pfp_path, like_count, is_lik
 
             {/* Updated post widgets */}
 
-            <div>
-                {is_liked ? "❤️" : "🤍"}
+            <div className="flex flex-row gap-4 px-4 py-4 text-sm">
+                {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
+                {isLiked ?
+                    <Heart className="w-7 h-7 fill-red-500 text-primary-border"/> :
+                    <Heart />
+                }
+                <div>{like_count} likes</div>
+                <div>comment button</div>
+                <div>Bookmark</div>
             </div>
 
             {/* // widget like comment + bookmark; as row
