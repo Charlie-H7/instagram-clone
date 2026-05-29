@@ -20,10 +20,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
     <html
@@ -32,7 +30,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
-        {modal}
         <Footer />
       </body>
     </html>

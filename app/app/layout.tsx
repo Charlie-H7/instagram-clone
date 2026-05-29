@@ -39,8 +39,10 @@ import Sidebar from "../components/Sidebar";
 
 export default async function AppLayout({
     children,
+    modal,
 }: {
     children: React.ReactNode;
+    modal: React.ReactNode;
 }) {
     const supabase = await createClient();
 
@@ -61,6 +63,7 @@ export default async function AppLayout({
             <main className="flex-1 ml-20 px-6">
                 <div className="w-full max-w-md mx-auto">
                     {children}
+                    {modal}
                 </div>
             </main>
         </div>
