@@ -2,6 +2,7 @@
 "use client"
 import { useMemo, useState } from "react"
 import Image from "next/image";
+import Link from "next/link";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { Heart, MessageCircle } from "lucide-react";
@@ -101,9 +102,13 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
                         <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
                     }
                 </button>
+                
                 <div>{likeCount} likes</div>
+                
                 {/* <div>comment button</div> */}
-                <MessageCircle />
+                <Link href="/p/123">
+                    <MessageCircle />
+                </Link>
                 <div>Comment</div>
                 <div>Bookmark</div>
             </div>
