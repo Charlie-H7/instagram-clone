@@ -64,49 +64,52 @@ import { useEffect, useState } from "react";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { fetchPostById } from "@/lib/posts";
 import Image from "next/image";
+import CommentSection from "./CommentSection";
 import { PostRow } from "@/lib/posts";
 
 type PostProps = {
-supabase: SupabaseClient;
-post_id: string;
+  supabase: SupabaseClient;
+  post_id: string;
 };
 
 export default function Post({ supabase, post_id }: PostProps) {
-const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
+  const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
 
-useEffect(() => {
+  useEffect(() => {
     if (!supabase || !post_id) return;
 
     const load = async () => {
-    const post = await fetchPostById(supabase, post_id);
-    setData(post);
+      const post = await fetchPostById(supabase, post_id);
+      setData(post);
     };
 
     load();
-}, [supabase, post_id]);
+  }, [supabase, post_id]);
 
-if (!data) return <div>Loading...</div>;
+  if (!data) return <div>Loading...</div>;
 
-const { data: post_storage_obj } = supabase.storage
-.from("posts")
-.getPublicUrl(data.image_path)
+  const { data: post_storage_obj } = supabase.storage
+    .from("posts")
+    .getPublicUrl(data.image_path);
 
-const public_post_url = post_storage_obj.publicUrl;
+  const public_post_url = post_storage_obj.publicUrl;
 
-    // console.log(`Post.tsx ${data.id}`);
-console.log(data);
+  return (
+    <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-slate-950/80 shadow-xl">
+      <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
+        <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
+      </div>
 
-
-// So need to make modal scroll on sm: so that I can actually see the comments on small screen... or is there a better way for this maybe like not the moda version if on sm:??
-// Also need to make the comment segment overflow so you can scroll and load more/not show all the comments for a post. (perhaps will need infinite scroll in multiple places... here and for the posts)
-return (
-    // <div className="flex flex-0 flex-row">
-    <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row flex-none">
-        {/* <div className="max-w-2xl w-full relative aspect-square"> */}
-        <div className="w-2/3 lg:w-1/2 relative aspect-square">
-            <Image src={public_post_url} fill alt={`Post by ${data.username}`}/>
+      <div className="w-full lg:w-1/2 overflow-hidden bg-slate-950/90 p-4">
+        <div className="mb-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+          <div className="text-lg font-semibold text-slate-100">{data.username}</div>
+          <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
         </div>
-        <div className="w-1/2 lg:w-1/2 bg-primary">Comment here</div>
+
+        <div className="h-full overflow-y-auto pr-1">
+          <CommentSection supabase={supabase} post_id={post_id} />
+        </div>
+      </div>
     </div>
-);
+  );
 }

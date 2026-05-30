@@ -1,57 +1,128 @@
-"use client"
-import { useEffect, useState } from "react"
-import { SupabaseClient } from "@supabase/supabase-js"
+"use client";
+import { useCallback, useEffect, useState } from "react";
+import { SupabaseClient } from "@supabase/supabase-js";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
-// Simply takes in all a post, joins on users to get their info, thats it nothing else
-// Since this is a client component that is trying to do an async action (fetch comments)
-// I have 2 option, 1. no async and just pass in comments from server component page.tsx (don't like this)
-// 2. use useEffect to fetch the data to render(prefer this as I want to end up using like an infinite scroll mechanism)
-// hmmm might be better to have this to just fetch an arbity query, track how many have been fetched and scrolled; s.t. this is like "CommentShell" and this calls component "Comment" just passing relevant data (comment text, username, etc...) to render one; BUT THATS JUST A THEORY. A GAME THEORY!
-
-type PostProps = {
-    supabase: SupabaseClient;
-    post_id: string;
+type CommentRow = {
+  id: string;
+  comment: string;
+  date: string;
 };
 
-export default function CommentSection({supabase, post_id}: PostProps){
-    const [loading, setLoading] = useState<boolean>(true); // A tracker to determine if the query processed
-    const [ commentList, setList ] = useState<any[]>([]); //sdionfjngon :'v
+type PostProps = {
+  supabase: SupabaseClient;
+  post_id: string;
+};
 
-    // state maybe on how many comments AND replies (deal with replies later) have loaded
+const PAGE_SIZE = 8;
 
-    // Code to render AFTER initial mount (render)
-    // Ignore real time comments for now..., -> solution for later fetch and filter comments on a timer, 2. supabase supscription, like on change.
-    useEffect(() =>{
-        //query join on users
-        // update state
-        // for right now just fetch all comment info
-        // const { data } = supabase.from("comments").select(
-        //     `
-        //     *,
-        //     post_id!inner(id),
-        //     `
-        // ).eq("comments.post_id", post_id)
-        const fetchMore = async () => {
-            const { data } = await supabase.from("comments").select(
-                `*`
-            ).eq("comments.post_id", post_id)
-            // update any state here
-            if(!data) return;
-            setList([...commentList, ...data]); // extend the comment list
+export default function CommentSection({ supabase, post_id }: PostProps) {
+  const [comments, setComments] = useState<CommentRow[]>([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchComments = useCallback(
+    async (nextPage: number) => {
+      if (!supabase || !post_id) return;
+
+      setError(null);
+      if (nextPage === 0) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
+
+      const from = nextPage * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+
+      const { data, error: fetchError } = await supabase
+        .from("comments")
+        .select("id, comment, date")
+        .eq("post_id", post_id)
+        .order("date", { ascending: true })
+        .range(from, to);
+
+      if (fetchError) {
+        setError(fetchError.message);
+      }
+
+      if (data) {
+        setComments((prev) => (nextPage === 0 ? data : [...prev, ...data]));
+        setHasMore(data.length === PAGE_SIZE);
+        setPage(nextPage + 1);
+      }
+
+      setLoading(false);
+      setLoadingMore(false);
+    },
+    [post_id, supabase]
+  );
+
+  useEffect(() => {
+    setComments([]);
+    setPage(0);
+    setHasMore(true);
+    setError(null);
+    fetchComments(0);
+  }, [fetchComments]);
+
+  const loadMoreComments = async () => {
+    if (!hasMore || loadingMore) return;
+    await fetchComments(page);
+  };
+
+  if (loading) {
+    return (
+      <div className="py-8 text-center text-sm text-slate-400">
+        Loading comments...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-8 text-center text-sm text-red-400">
+        Error loading comments: {error}
+      </div>
+    );
+  }
+
+  return (
+    <div id="comment-scrollable" className="h-full overflow-y-auto pr-1">
+      <InfiniteScroll
+        dataLength={comments.length}
+        next={loadMoreComments}
+        hasMore={hasMore}
+        loader={
+          <div className="py-4 text-center text-sm text-slate-400">
+            Loading more comments...
+          </div>
         }
-
-        fetchMore();
-
-        // clearing thing should reset states, and mark any busy trackers (if used to false)
-    },[supabase, post_id]);
-
-    return(
-        <div>
-            <InfiniteScroll dataLength={1} next={fetchMore} hasMore={}  loader={}>
-                
-            </InfiniteScroll>
+        endMessage={
+          <p className="py-4 text-center text-sm text-slate-500">
+            No more comments.
+          </p>
+        }
+        scrollableTarget="comment-scrollable"
+        style={{ overflow: "hidden" }}
+      >
+        <div className="space-y-4">
+          {comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4"
+            >
+              <div className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                {new Date(comment.date).toLocaleString()}
+              </div>
+              <p className="mt-2 text-base text-slate-100">{comment.comment}</p>
+            </div>
+          ))}
         </div>
-    )
+      </InfiniteScroll>
+    </div>
+  );
 }
