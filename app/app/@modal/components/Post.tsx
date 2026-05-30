@@ -73,6 +73,7 @@ type PostProps = {
 };
 
 export default function Post({ supabase, post_id }: PostProps) {
+  // Local state for the current post record.
   const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
 
   useEffect(() => {
@@ -88,6 +89,7 @@ export default function Post({ supabase, post_id }: PostProps) {
 
   if (!data) return <div>Loading...</div>;
 
+  // Build the public image URL for the post image.
   const { data: post_storage_obj } = supabase.storage
     .from("posts")
     .getPublicUrl(data.image_path);
@@ -106,6 +108,7 @@ export default function Post({ supabase, post_id }: PostProps) {
           <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
         </div>
 
+        {/* CommentSection handles fetching and paginating comments. */}
         <div className="h-full overflow-y-auto pr-1">
           <CommentSection supabase={supabase} post_id={post_id} />
         </div>

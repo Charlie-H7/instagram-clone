@@ -14,20 +14,28 @@ type PostProps = {
   post_id: string;
 };
 
+// How many comments to fetch per scroll page.
 const PAGE_SIZE = 8;
 
 export default function CommentSection({ supabase, post_id }: PostProps) {
+  // The current comments loaded so far.
   const [comments, setComments] = useState<CommentRow[]>([]);
+  // Which page number we are currently on.
   const [page, setPage] = useState(0);
+  // Whether there is more data to fetch.
   const [hasMore, setHasMore] = useState(true);
+  // Loading the first page.
   const [loading, setLoading] = useState(true);
+  // Loading a later page after the first one.
   const [loadingMore, setLoadingMore] = useState(false);
+  // Any error message from Supabase.
   const [error, setError] = useState<string | null>(null);
 
   const fetchComments = useCallback(
     async (nextPage: number) => {
       if (!supabase || !post_id) return;
 
+      // Reset any previous error before fetching.
       setError(null);
       if (nextPage === 0) {
         setLoading(true);
@@ -35,6 +43,7 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
         setLoadingMore(true);
       }
 
+      // Calculate the row range for the Supabase paginated query.
       const from = nextPage * PAGE_SIZE;
       const to = from + PAGE_SIZE - 1;
 
@@ -50,7 +59,10 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
       }
 
       if (data) {
+        // If this is the first page, replace the list.
+        // Otherwise append the next batch.
         setComments((prev) => (nextPage === 0 ? data : [...prev, ...data]));
+        // If we got a full page, there might still be more.
         setHasMore(data.length === PAGE_SIZE);
         setPage(nextPage + 1);
       }
@@ -62,6 +74,8 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
   );
 
   useEffect(() => {
+    // Reset state whenever post_id or supabase changes,
+    // then fetch the first page of comments.
     setComments([]);
     setPage(0);
     setHasMore(true);
@@ -106,6 +120,7 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
             No more comments.
           </p>
         }
+        // Use the wrapper div as the scrollable container.
         scrollableTarget="comment-scrollable"
         style={{ overflow: "hidden" }}
       >
