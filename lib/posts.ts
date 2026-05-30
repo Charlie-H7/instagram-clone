@@ -68,6 +68,17 @@ export async function fetchFeedPosts(supabase: SupabaseClient){
     return data;
 }
 
+export async function fetchPostById(supabase: SupabaseClient, id: string){
+    const { data, error } = await supabase.from("posts").select("*").eq("id",id).single();
+    console.log(`post_id ${id}`)
+
+    if(error){
+        console.log(error.message);
+        return;
+    }
+
+    return(data);
+}
 
 // What actually works in Supabase JS
 

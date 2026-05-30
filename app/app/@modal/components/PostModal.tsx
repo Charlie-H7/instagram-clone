@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import Image from "next/image";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import Post from "./Post";
 
 export default function PostModal({ id }: { id: string }) {
   const router = useRouter();
-  const supabase = useMemo(() => {createBrowserSupabaseClient();},[])
+  // const supabase = useMemo(() => {createBrowserSupabaseClient();},[]);
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
@@ -16,7 +18,7 @@ export default function PostModal({ id }: { id: string }) {
 
         <p className="mt-2">Post ID: {id}</p> */}
 
-
+        <Post supabase={supabase} post_id={id}/>
         <button onClick={() => router.back()}>
           Close
         </button>

@@ -13,10 +13,11 @@
 // }
 
 import PostModal from "../../components/PostModal";
-
+// import Post
 export default function Page({ params }: { params: { id: string } }) {
   // fetch the post data
-  
+//   import
+  console.log(`params.id ${params.id}`)
     return (
         <PostModal id={params.id} />
         
