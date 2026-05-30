@@ -96,9 +96,17 @@ const public_post_url = post_storage_obj.publicUrl;
     // console.log(`Post.tsx ${data.id}`);
 console.log(data);
 
+
+// So need to make modal scroll on sm: so that I can actually see the comments on small screen... or is there a better way for this maybe like not the moda version if on sm:??
+// Also need to make the comment segment overflow so you can scroll and load more/not show all the comments for a post. (perhaps will need infinite scroll in multiple places... here and for the posts)
 return (
-    <div>
-        <Image src={public_post_url} fill alt="tk"/>
+    // <div className="flex flex-0 flex-row">
+    <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row flex-none">
+        {/* <div className="max-w-2xl w-full relative aspect-square"> */}
+        <div className="w-2/3 lg:w-1/2 relative aspect-square">
+            <Image src={public_post_url} fill alt={`Post by ${data.username}`}/>
+        </div>
+        <div className="w-1/2 lg:w-1/2 bg-primary">Comment here</div>
     </div>
 );
 }
