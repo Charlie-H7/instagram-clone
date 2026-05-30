@@ -1,3 +1,5 @@
+// THIS THING ISNT NEEDED ASS HAVING THIS MODAL, LEADS TO DOUBLE UI ON URL=APP/P/...
+
 // export default function PostModal({ params }: { params: { id: string } }) {
 //     console.log("here not in default");
 //   return (
@@ -13,7 +15,7 @@
 // }
 
 import PostModal from "../../components/PostModal";
-// // import Post
+// import Post
 // export default function Page({ params }: { params: { id: string } }) {
 //   // fetch the post data
 // //   import
