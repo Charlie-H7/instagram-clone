@@ -59,9 +59,21 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
       }
 
       if (data) {
-        // If this is the first page, replace the list.
-        // Otherwise append the next batch.
-        setComments((prev) => (nextPage === 0 ? data : [...prev, ...data]));
+        // Merge new batch with existing comments and remove duplicates by id.
+        // This prevents duplicate keys when the same comment appears in multiple pages
+        // (e.g. due to ordering changes or concurrent updates).
+        setComments((prev) => {
+          const combined = nextPage === 0 ? data : [...prev, ...data];
+          const seen = new Set<string>();
+          const deduped: CommentRow[] = [];
+          for (const c of combined) {
+            if (!seen.has(c.id)) {
+              seen.add(c.id);
+              deduped.push(c);
+            }
+          }
+          return deduped;
+        });
         // If we got a full page, there might still be more.
         setHasMore(data.length === PAGE_SIZE);
         setPage(nextPage + 1);
