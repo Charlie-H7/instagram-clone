@@ -185,3 +185,7 @@ export default function Post({ supabase, post_id }: PostProps) {
         </div>
     );
 }
+// To do
+// 1. on submit send to db
+// 2. default for page (non modal to work) => should be the same thing for now (this method of comments is temporary as I'm not to sure on the approach for timers)
+// 3. infinite scroll on Posts

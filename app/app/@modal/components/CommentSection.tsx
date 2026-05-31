@@ -94,6 +94,7 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
     setError(null);
     fetchComments(0);
   }, [fetchComments]);
+//   }, []);
 
   const loadMoreComments = async () => {
     if (!hasMore || loadingMore) return;
