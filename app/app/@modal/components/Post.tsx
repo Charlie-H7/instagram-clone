@@ -1,63 +1,3 @@
-// "use client"
-// import { SupabaseClient } from "@supabase/supabase-js"
-// import { fetchPostById } from "@/lib/posts"
-// import Image from "next/image";
-
-// type PostProps = {
-//   supabase: SupabaseClient;
-//   post_id: string;
-// };
-
-// export default function Post({supabase, post_id}: PostProps){
-//     // could add double tap functionality later
-//     const data = fetchPostById(supabase, post_id);
-//     console.log(`Post.tsx ${data}`);
-//     console.log(supabase);
-//     // const {data: post_data} = supabase.storage.from("posts").getPublicUrl(data!.image_url);
-//     // const 
-//     // Select a single one from feed posts where the conditional is on post id
-//     // const { data } = async () => { await supabase.from("feed_posts").select("*").eq("id", post_id)};
-//     // async function fetchPost(){
-//     //     const { data } = await supabase.from("feed_posts").select("*").eq("id", post_id);
-//     // }
-//     return(
-//         <div>
-//             {/* <Image src={`data`}/> */}
-//             test
-//         </div>
-//     );
-
-// }
-// // "use client";
-
-// // import { useEffect, useState } from "react";
-// // import { SupabaseClient } from "@supabase/supabase-js";
-// // import { fetchPostById } from "@/lib/posts";
-
-// // type PostProps = {
-// //   supabase: SupabaseClient;
-// //   post_id: string;
-// // };
-
-// // export default function Post({ supabase, post_id }: PostProps) {
-// //   const [data, setData] = useState<any>(null);
-
-// //   useEffect(() => {
-// //     if (!supabase || !post_id) return;
-
-// //     const load = async () => {
-// //       const post = await fetchPostById(supabase, post_id);
-// //       setData(post);
-// //     };
-
-// //     load();
-// //   }, [supabase, post_id]);
-
-// //   console.log("render data:", data);
-
-// //   return <div>test</div>;
-// // }
-
 "use client";
 
 import { useCallback, useEffect, useState, useMemo } from "react";
@@ -74,23 +14,23 @@ type CommentRow = {
   date: string;
 };
 
-type PostProps = {
-  supabase: SupabaseClient;
-  post_id: string;
-};
-
 // type PostProps = {
-// //   supabase: SupabaseClient;
+//   supabase: SupabaseClient;
 //   post_id: string;
 // };
 
-export default function Post({ supabase, post_id }: PostProps) {
+type PostProps = {
+//   supabase: SupabaseClient;
+  post_id: string;
+};
+
+export default function Post({ post_id }: PostProps) {
 // export default function Post({ post_id }: PostProps) {
   // Local state for the current post record.
     const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
     const [comment, setComment] = useState<string>(""); // Used to just track the current comment on submit
     const [commentsList, setCommentList] = useState<CommentRow[]>([]); // This is used to track if multiple comments are made such that all comments made in one session go to the top
-    // const supabase = useMemo(() =>createBrowserSupabaseClient(),[]);
+    const supabase = useMemo(() =>createBrowserSupabaseClient(),[]);
 
     async function handleAddComment(e: React.FormEvent){
         e.preventDefault();

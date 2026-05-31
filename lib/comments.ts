@@ -8,5 +8,10 @@ export type NewComment = {
 };
 
 export async function addNewComment(supabase: SupabaseClient, {post_id, user_id, parent_comment_id, comment}: NewComment){
-
+    const {error} = await supabase.from("comments").insert({
+        post_id,
+        user_id,
+        parent_comment_id,
+        comment,
+    })
 }

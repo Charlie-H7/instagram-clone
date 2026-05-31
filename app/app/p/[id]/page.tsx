@@ -29,8 +29,8 @@ export default async function PostPage({
   const { id } = await params;
   const supabase = await createClient();
   return (
-    <div>
-        <Post supabase={supabase} post_id={id}/>
+    <div className="fixed inset-0 flex flex-none flex-col items-center justify-center mx-auto">
+        <Post post_id={id}/>
         {/* <Post post_id={id}/> */}
     </div>
     // <div className="p-10">
