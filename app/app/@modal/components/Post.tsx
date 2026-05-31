@@ -7,6 +7,7 @@ import { fetchPostById } from "@/lib/posts";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
 import { PostRow } from "@/lib/posts";
+import { addNewComment } from "@/lib/comments"; // pushes new comment to the database
 
 type CommentRow = {
 //   id: string;
@@ -32,8 +33,13 @@ export default function Post({ post_id }: PostProps) {
     const [commentsList, setCommentList] = useState<CommentRow[]>([]); // This is used to track if multiple comments are made such that all comments made in one session go to the top
     const supabase = useMemo(() =>createBrowserSupabaseClient(),[]);
 
+
     async function handleAddComment(e: React.FormEvent){
         e.preventDefault();
+        // const {data: {user: {id: user_id}}}} = await supabase.auth.getUser();
+        const {data: {user}} = await supabase.auth.getUser()
+        const user_id = user?.id;
+
         // on submit of form
         // extend the list of the shit (actually newest one should be at the top so place comment at [0])
         // setCommentList([...commentsList, ...comment])
@@ -44,6 +50,16 @@ export default function Post({ post_id }: PostProps) {
         },
         ...prev,
         ]);
+
+
+
+        if (!user_id) {
+            throw new Error("User not authenticated");
+            // redirect, to '/' later
+        }
+
+
+        const error = await addNewComment(supabase, {post_id, user_id, comment})
     }
 
     useEffect(() => {
@@ -122,7 +138,7 @@ export default function Post({ post_id }: PostProps) {
                 </div>
                 <p className="mt-2 text-sm text-slate-300">{data.caption}</p> */}
                 <form onSubmit={handleAddComment}>
-                    <textarea placeholder="Write a comment..." className="w-full" onChange={(e)=>{setComment(e.target.value);}}></textarea>
+                    <textarea required placeholder="Write a comment..." className="w-full" onChange={(e)=>{setComment(e.target.value);}}></textarea>
                     <button type="submit">Post</button>
                 </form>
             </div>
