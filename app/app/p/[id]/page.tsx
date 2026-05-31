@@ -31,6 +31,7 @@ export default async function PostPage({
   return (
     <div>
         <Post supabase={supabase} post_id={id}/>
+        {/* <Post post_id={id}/> */}
     </div>
     // <div className="p-10">
     //   <h1 className="text-2xl font-bold">FULL PAGE POST</h1>

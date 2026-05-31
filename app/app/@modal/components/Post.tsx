@@ -60,8 +60,9 @@
 
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { fetchPostById } from "@/lib/posts";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
@@ -78,12 +79,18 @@ type PostProps = {
   post_id: string;
 };
 
+// type PostProps = {
+// //   supabase: SupabaseClient;
+//   post_id: string;
+// };
 
 export default function Post({ supabase, post_id }: PostProps) {
+// export default function Post({ post_id }: PostProps) {
   // Local state for the current post record.
     const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
     const [comment, setComment] = useState<string>(""); // Used to just track the current comment on submit
     const [commentsList, setCommentList] = useState<CommentRow[]>([]); // This is used to track if multiple comments are made such that all comments made in one session go to the top
+    // const supabase = useMemo(() =>createBrowserSupabaseClient(),[]);
 
     async function handleAddComment(e: React.FormEvent){
         e.preventDefault();
@@ -164,7 +171,8 @@ export default function Post({ supabase, post_id }: PostProps) {
                     </div>
                     )): (null)}
                 </div>
-                <CommentSection supabase={supabase} post_id={post_id} />
+                {/* <CommentSection supabase={supabase} post_id={post_id} /> */}
+                <CommentSection post_id={post_id} />
             </div>
 
             {/* POST INFO (always below comments) */}

@@ -1,5 +1,6 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { SupabaseClient } from "@supabase/supabase-js";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -9,15 +10,20 @@ type CommentRow = {
   date: string;
 };
 
+// type PostProps = {
+//   supabase: SupabaseClient;
+//   post_id: string;
+// };
+
 type PostProps = {
-  supabase: SupabaseClient;
   post_id: string;
 };
 
 // How many comments to fetch per scroll page.
 const PAGE_SIZE = 8;
 
-export default function CommentSection({ supabase, post_id }: PostProps) {
+// export default function CommentSection({ supabase, post_id }: PostProps) {
+export default function CommentSection({post_id}: PostProps) {
   // The current comments loaded so far.
   const [comments, setComments] = useState<CommentRow[]>([]);
   // Which page number we are currently on.
@@ -30,6 +36,7 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
   const [loadingMore, setLoadingMore] = useState(false);
   // Any error message from Supabase.
   const [error, setError] = useState<string | null>(null);
+  const supabase = useMemo(() =>createBrowserSupabaseClient(),[]);
 
   const fetchComments = useCallback(
     async (nextPage: number) => {
@@ -83,6 +90,7 @@ export default function CommentSection({ supabase, post_id }: PostProps) {
       setLoadingMore(false);
     },
     [post_id, supabase]
+    // []
   );
 
   useEffect(() => {
