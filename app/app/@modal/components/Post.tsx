@@ -60,88 +60,128 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { fetchPostById } from "@/lib/posts";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
 import { PostRow } from "@/lib/posts";
 
+type CommentRow = {
+//   id: string;
+  comment: string;
+  date: string;
+};
+
 type PostProps = {
   supabase: SupabaseClient;
   post_id: string;
 };
 
+
 export default function Post({ supabase, post_id }: PostProps) {
   // Local state for the current post record.
-  const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
+    const [data, setData] = useState<Awaited<ReturnType<typeof fetchPostById>>>(null);
+    const [comment, setComment] = useState<string>(""); // Used to just track the current comment on submit
+    const [commentsList, setCommentList] = useState<CommentRow[]>([]); // This is used to track if multiple comments are made such that all comments made in one session go to the top
 
-  useEffect(() => {
-    if (!supabase || !post_id) return;
+    async function handleAddComment(e: React.FormEvent){
+        e.preventDefault();
+        // on submit of form
+        // extend the list of the shit (actually newest one should be at the top so place comment at [0])
+        // setCommentList([...commentsList, ...comment])
+        setCommentList((prev) => [
+        {
+            comment,
+            date: new Date().toISOString(),
+        },
+        ...prev,
+        ]);
+    }
 
-    const load = async () => {
-      const post = await fetchPostById(supabase, post_id);
-      setData(post);
-    };
+    useEffect(() => {
+        if (!supabase || !post_id) return;
 
-    load();
-  }, [supabase, post_id]);
+        const load = async () => {
+        const post = await fetchPostById(supabase, post_id);
+        setData(post);
+        };
 
-  if (!data) return <div>Loading...</div>;
+        load();
+    }, [supabase, post_id]);
 
-  // Build the public image URL for the post image.
-  const { data: post_storage_obj } = supabase.storage
-    .from("posts")
-    .getPublicUrl(data.image_path);
+    if (!data) return <div>Loading...</div>;
 
-    /* <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
-  
-  {/* COMMENTS (takes remaining space, scrolls) }
-  <div className="flex-1 overflow-y-auto pr-1">
-    <CommentSection supabase={supabase} post_id={post_id} />
-  </div>
+    // Build the public image URL for the post image.
+    const { data: post_storage_obj } = supabase.storage
+        .from("posts")
+        .getPublicUrl(data.image_path);
 
-  {/* POST INFO (always below comments) }
-  <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
-    <div className="text-lg font-semibold text-slate-100" tabIndex={0}>
-      {data.username}
+        /* <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
+
+    {/* COMMENTS (takes remaining space, scrolls) }
+    <div className="flex-1 overflow-y-auto pr-1">
+        <CommentSection supabase={supabase} post_id={post_id} />
     </div>
-    <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
-  </div>
 
-</div> */
-  const public_post_url = post_storage_obj.publicUrl;
+    {/* POST INFO (always below comments) }
+    <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+        <div className="text-lg font-semibold text-slate-100" tabIndex={0}>
+        {data.username}
+        </div>
+        <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
+    </div>
+
+    </div> */
+    const public_post_url = post_storage_obj.publicUrl;
 
     return (
-    <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-slate-950/80 shadow-xl">
-      <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
-        <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
-      </div>
-
-        {/* Here */}
-
-        <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
-
-        {/* COMMENTS (takes remaining space, scrolls) */}
-        <div className="flex-1 overflow-y-auto pr-1">
-            <CommentSection supabase={supabase} post_id={post_id} />
+        <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-slate-950/80 shadow-xl">
+        <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
+            <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
         </div>
 
-        {/* POST INFO (always below comments) */}
-        <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
-            {/* <div className="text-lg font-semibold text-slate-100">
-            {data.username}
+            {/* Here */}
+
+            <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
+            {/* HERE */}
+            {/* {commentsList ? commentsList.map((comment) => (
+                // <div key={}>
+                <div >
+                    <div>{comment.date}</div>
+                    <div>{comment.comment}</div>
+                </div>
+                )): (null)} */}
+            {/* HERE */}
+            {/* COMMENTS (takes remaining space, scrolls) */}
+            <div className="flex-1 overflow-y-auto pr-1">
+                <div className="space-y-4 pb-4">
+                    {commentsList ? commentsList.map((comment) => (
+                    // <div key={}>
+                    <div className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4">
+                        <div>{comment.date}</div>
+                        <div>{comment.comment}</div>
+                    </div>
+                    )): (null)}
+                </div>
+                <CommentSection supabase={supabase} post_id={post_id} />
             </div>
-            <p className="mt-2 text-sm text-slate-300">{data.caption}</p> */}
-            <form>
-                <textarea placeholder="Write a comment..." className="w-full"></textarea>
-                <button type="submit">Post</button>
-            </form>
-        </div>
+
+            {/* POST INFO (always below comments) */}
+            <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+                {/* <div className="text-lg font-semibold text-slate-100">
+                {data.username}
+                </div>
+                <p className="mt-2 text-sm text-slate-300">{data.caption}</p> */}
+                <form onSubmit={handleAddComment}>
+                    <textarea placeholder="Write a comment..." className="w-full" onChange={(e)=>{setComment(e.target.value);}}></textarea>
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+
+            </div>
+
 
         </div>
-
-
-    </div>
-  );
+    );
 }
