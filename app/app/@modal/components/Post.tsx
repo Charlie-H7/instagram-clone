@@ -94,25 +94,54 @@ export default function Post({ supabase, post_id }: PostProps) {
     .from("posts")
     .getPublicUrl(data.image_path);
 
+    /* <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
+  
+  {/* COMMENTS (takes remaining space, scrolls) }
+  <div className="flex-1 overflow-y-auto pr-1">
+    <CommentSection supabase={supabase} post_id={post_id} />
+  </div>
+
+  {/* POST INFO (always below comments) }
+  <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+    <div className="text-lg font-semibold text-slate-100" tabIndex={0}>
+      {data.username}
+    </div>
+    <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
+  </div>
+
+</div> */
   const public_post_url = post_storage_obj.publicUrl;
 
-  return (
+    return (
     <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-slate-950/80 shadow-xl">
       <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
         <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
       </div>
 
-      <div className="w-full lg:w-1/2 overflow-hidden bg-slate-950/90 p-4">
-        <div className="mb-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
-          <div className="text-lg font-semibold text-slate-100">{data.username}</div>
-          <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
+        {/* Here */}
+
+        <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
+
+        {/* COMMENTS (takes remaining space, scrolls) */}
+        <div className="flex-1 overflow-y-auto pr-1">
+            <CommentSection supabase={supabase} post_id={post_id} />
         </div>
 
-        {/* CommentSection handles fetching and paginating comments. */}
-        <div className="h-full overflow-y-auto pr-1">
-          <CommentSection supabase={supabase} post_id={post_id} />
+        {/* POST INFO (always below comments) */}
+        <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+            {/* <div className="text-lg font-semibold text-slate-100">
+            {data.username}
+            </div>
+            <p className="mt-2 text-sm text-slate-300">{data.caption}</p> */}
+            <form>
+                <textarea placeholder="Write a comment..." className="w-full"></textarea>
+                <button type="submit">Post</button>
+            </form>
         </div>
-      </div>
+
+        </div>
+
+
     </div>
   );
 }
