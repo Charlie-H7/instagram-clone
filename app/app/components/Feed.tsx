@@ -1,20 +1,84 @@
 //lowkey could just get rid of feed and make this like the home page tsx for the /app directory no??
 "use client"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import Image from "next/image";
 import Link from "next/link";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { Heart, MessageCircle } from "lucide-react";
 import { unlikePost, likePost } from "@/lib/likes";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+// Okay so here is what I need to know about creating with infiniteScroll
+    // States: 
+    /*
+    InfiniteScroll:
+        PAGE_SIZE -> A constant that shows how many posts should appear per section
+        page -> which like page we are on
+        Array state of posts -> iterated over to print the array
+        state hasMore: <bool> of if there is more that could be fetched
+        state initialLoad: this is just a state used for the inital fetch of supabase; then becomes !initialLoad
+        LoadingMore: if page is being loaded after inital
+
+    Trackers:
+        isLiked, LikeCount
+    */
+
+const PAGE_SIZE = 10;
 
 export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
     const [isLiked, setLiked] = useState<boolean>(is_liked);
     const [likeCount, setLikeCount] = useState<number>(like_count);
+
+    // InfiniteScroll
+    const [page, setPage] = useState<number>(0); // the current page
+    const [posts, setPosts] = useState<any[]>([]); // get a specific typing/data struct later
+    const [hasMore, setHasMore] = useState<boolean>(true);
+
+        // Posts loading trackers
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
+
     // const obj = map
     // make a storage object for supabase
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
+    const fetchPosts = useCallback( async (nextPage: number) => {  // not too sure what the hell the parameter is in this case... like self referential im guessing like .this
+        // Check if it is the first page to render
+        if(page === 0){
+            // Set that it has to be the initial load
+            setInitialLoading(true);
+        }
+        else { // Otherwise it is subsequent page loads and we should wait
+            setLoadingMore(true);
+            setInitialLoading(false);
+        }
+
+        // Get the offset of records the location of the records we would need to get from the 
+        const from = nextPage * PAGE_SIZE;
+        const to = from + PAGE_SIZE - 1;
+        
+        // Make a fetch from the post table
+        const { data, error } = await supabase.from("feed_posts").select("*").eq("id", user_id);
+        if(error){
+            throw new Error(error.message);
+        }
+        // if no error then make the post end 
+        // Extend posts, by len of PAGE_SIZE
+        if(data){    
+            setPosts( (prev) => { // hmmm, should note down array extension
+                const temp =  data ? [...prev, ...data];
+                return(temp);
+            });
+            // If we got a full page, there might still be more.
+            setHasMore(data.length === PAGE_SIZE);
+            setPage(nextPage + 1);
+        }
+
+        setInitialLoading(false);
+        setLoadingMore(false);
+        return;
+    },[supabase]);
 
     // make state updates before async functions to prevent like the 
     async function handleLike() {
