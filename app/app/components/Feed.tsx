@@ -1,6 +1,6 @@
 //lowkey could just get rid of feed and make this like the home page tsx for the /app directory no??
 "use client"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, useEffect } from "react"
 import Image from "next/image";
 import Link from "next/link";
 import { PostRow,PostFetch } from "@/lib/posts";
@@ -39,6 +39,7 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
         // Posts loading trackers
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     // const obj = map
     // make a storage object for supabase
@@ -67,7 +68,8 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
         // Extend posts, by len of PAGE_SIZE
         if(data){    
             setPosts( (prev) => { // hmmm, should note down array extension
-                const temp =  data ? [...prev, ...data];
+                // const temp =  data ? [...prev, ...data];
+                const temp = nextPage === 0 ? data : [...prev, ...data];
                 return(temp);
             });
             // If we got a full page, there might still be more.
@@ -79,6 +81,21 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
         setLoadingMore(false);
         return;
     },[supabase]);
+
+    useEffect(() => {
+    // Reset state whenever post_id or supabase changes,
+    // then fetch the first page of comments.
+    setPosts([]);
+    setPage(0);
+    setHasMore(true);
+    setError(null);
+    fetchPosts(0);
+    }, [fetchPosts]);
+
+  const loadMorePosts = async () => {
+    if (!hasMore || loadingMore) return;
+    await fetchPosts(page);
+  };
 
     // make state updates before async functions to prevent like the 
     async function handleLike() {
