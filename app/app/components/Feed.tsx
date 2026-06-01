@@ -23,17 +23,34 @@ import InfiniteScroll from "react-infinite-scroll-component";
     Trackers:
         isLiked, LikeCount
     */
+export type FeedTypes = {
+    caption: string;
+    date: string; // ISO date string
+    following_id: string;
+    id: string;
+    image_path: string;
+    is_liked: boolean;
+    like_count: number;
+    name: string;
+    pfp_path: string;
+    user_id: string;
+    username: string;
+}
 
 const PAGE_SIZE = 10;
 
-export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
+// export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
+export default function Feed(){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
-    const [isLiked, setLiked] = useState<boolean>(is_liked);
-    const [likeCount, setLikeCount] = useState<number>(like_count);
+    // const user_id = {async () => await supabase.auth.getUser().data.id}
+    // const [isLiked, setLiked] = useState<boolean>(is_liked);
+    // const [likeCount, setLikeCount] = useState<number>(like_count);
+    const [isLiked, setLiked] = useState<boolean>(false);
+    const [likeCount, setLikeCount] = useState<number>(0);
 
     // InfiniteScroll
     const [page, setPage] = useState<number>(0); // the current page
-    const [posts, setPosts] = useState<any[]>([]); // get a specific typing/data struct later
+    const [posts, setPosts] = useState<FeedTypes[]>([]); // get a specific typing/data struct later
     const [hasMore, setHasMore] = useState<boolean>(true);
 
         // Posts loading trackers
@@ -65,6 +82,10 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
         if(error){
             throw new Error(error.message);
         }
+
+        // add new thing to data
+
+
         // if no error then make the post end 
         // Extend posts, by len of PAGE_SIZE
         if(data){    
@@ -99,7 +120,11 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
   };
 
     // make state updates before async functions to prevent like the 
-    async function handleLike() {
+    async function handleLike(post_id: string) {
+        const user_id = (await supabase.auth.getUser()).data.user?.id
+        if (!user_id){
+            return; // ideally reroute for home
+        }
         const prev_liked = isLiked;
         const prev_like_count = likeCount;
 
@@ -122,19 +147,19 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
     }
 
 
-    const { data: pfp_storage_obj } = supabase.storage
-    .from("pfp")
-    .getPublicUrl(pfp_path)
+            // const { data: pfp_storage_obj } = supabase.storage
+            // .from("pfp")
+            // .getPublicUrl(pfp_path)
 
-    const { data: post_storage_obj } = supabase.storage
-    .from("posts")
-    .getPublicUrl(image_path)
+            // const { data: post_storage_obj } = supabase.storage
+            // .from("posts")
+            // .getPublicUrl(image_path)
 
-    // if (error) console.log(error.)
+            // // if (error) console.log(error.)
 
-    const pfp_public_url = pfp_storage_obj.publicUrl;
-    const post_public_url = post_storage_obj.publicUrl;
-    console.log(post_public_url)
+            // const pfp_public_url = pfp_storage_obj.publicUrl;
+            // const post_public_url = post_storage_obj.publicUrl;
+            // console.log(post_public_url)
 
     return(
         <div className="w-full">
@@ -156,66 +181,75 @@ export default function Feed({id: post_id, username, image_path, pfp_path, like_
                 scrollableTarget="comment-scrollable"
                 style={{ overflow: "hidden" }}
             >
-            <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
-                {/* Name + picture in row*/}
+            {posts.map((post) => (
+                
+                <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
 
-                {/* <div>{user_id}</div> */}
-                {/* <div>{image_path}</div> */}
-                {/* <div>{pfp_path}</div> */}
-                {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
-                <div className="flex flex-row items-center">
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                        <Image
-                            src={pfp_public_url}
-                            alt={`${username} pfp`}
-                            fill
-                            className="object-cover"
-                            />
+                    {/* {console.log("shize")}
+                    {console.log(posts)} */}
+
+
+                    {/* <div>{user_id}</div> */}
+                    {/* <div>{image_path}</div> */}
+                    {/* <div>{pfp_path}</div> */}
+                    {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
+                    <div className="flex flex-row items-center">
+                        <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                            <Image
+                                src={supabase.storage.from("pfp").getPublicUrl(post.pfp_path).data.publicUrl}
+                                alt={`${post.username} pfp`}
+                                fill
+                                className="object-cover"
+                                />
+                        </div>
+                        <div className="items-center">{post.username}</div>
                     </div>
-                    <div className="items-center">{username}</div>
+                    {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
+                    {/* <div className="relative w-full h-[32rem] bg-slate-100"> */}
+                    <div className="relative w-full h-[32rem] bg-slate-100">
+                        {/* <Image src={post_public_url} alt="Post image" fill className="object-cover" /> */}
+                        {/* <Image src={post_public_url} alt="Post image" fill className="" /> */}
+                        <Image 
+                            src={supabase.storage.from("posts").getPublicUrl(post.image_path).data.publicUrl} 
+                            alt="Post image" fill className="" />
+                    </div>
+
+                    {/* Post widgets */}
+                    {/* <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
+                        <div>like icon with on click</div>
+                        <div>{like_count}</div>
+                        <div>comment button</div>
+                        <div>Bookmark</div>
+                    </div> */}
+                    {/* Post widgets */}
+
+
+
+                    {/* Updated post widgets */}
+
+                    <div className="flex flex-row gap-4 px-4 py-4 text-sm">
+                        {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
+                        <button onClick={() => handleLike(post.id)}>
+                            {isLiked ?
+                                <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
+                                <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
+                            }
+                        </button>
+                        
+                        <div>{likeCount} likes</div>
+                        
+                        {/* <div>comment button</div> */}
+                        <Link href={`/app/p/${post.id}`} aria-label="Open post">
+                            <MessageCircle />
+                        </Link>
+                        <div>Comment</div>
+                        <div>Bookmark</div>
+                    </div>
+
+                    {/* // widget like comment + bookmark; as row
+                    // top comment section col */}
                 </div>
-                {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
-                {/* <div className="relative w-full h-[32rem] bg-slate-100"> */}
-                <div className="relative w-full h-[32rem] bg-slate-100">
-                    {/* <Image src={post_public_url} alt="Post image" fill className="object-cover" /> */}
-                    <Image src={post_public_url} alt="Post image" fill className="" />
-                </div>
-
-                {/* Post widgets */}
-                {/* <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
-                    <div>like icon with on click</div>
-                    <div>{like_count}</div>
-                    <div>comment button</div>
-                    <div>Bookmark</div>
-                </div> */}
-                {/* Post widgets */}
-
-
-
-                {/* Updated post widgets */}
-
-                <div className="flex flex-row gap-4 px-4 py-4 text-sm">
-                    {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
-                    <button onClick={handleLike}>
-                        {isLiked ?
-                            <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
-                            <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
-                        }
-                    </button>
-                    
-                    <div>{likeCount} likes</div>
-                    
-                    {/* <div>comment button</div> */}
-                    <Link href={`/app/p/${post_id}`} aria-label="Open post">
-                        <MessageCircle />
-                    </Link>
-                    <div>Comment</div>
-                    <div>Bookmark</div>
-                </div>
-
-                {/* // widget like comment + bookmark; as row
-                // top comment section col */}
-            </div>
+            ))}
             </InfiniteScroll>
         </div>
     );

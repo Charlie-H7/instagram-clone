@@ -20,10 +20,7 @@ export default async function Home(){
         <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full">
             {/* max-w-[630px] */}
             {/* {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} user_id={entry.user_id} image_path={entry.image_path}/>) */}
-            {data?.map( (entry) => (<Feed key={entry.id} id={entry.id} username={entry.username} image_path={entry.image_path} pfp_path={entry.pfp_path} like_count={entry.like_count} is_liked={entry.is_liked} user_id={user_id}/>)
-            // widget like comment + bookmark; as row
-            // top comment section col
-            )}
+            <Feed />
         </div>
     )
 }
