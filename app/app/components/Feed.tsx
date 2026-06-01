@@ -6,8 +6,9 @@ import Link from "next/link";
 import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { Heart, MessageCircle } from "lucide-react";
-import { unlikePost, likePost } from "@/lib/likes";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+import PostLikeButton from "./Like";
 
 // Okay so here is what I need to know about creating with infiniteScroll
     // States: 
@@ -120,31 +121,31 @@ export default function Feed(){
   };
 
     // make state updates before async functions to prevent like the 
-    async function handleLike(post_id: string) {
-        const user_id = (await supabase.auth.getUser()).data.user?.id
-        if (!user_id){
-            return; // ideally reroute for home
-        }
-        const prev_liked = isLiked;
-        const prev_like_count = likeCount;
+    // async function handleLike(post_id: string) {
+    //     const user_id = (await supabase.auth.getUser()).data.user?.id
+    //     if (!user_id){
+    //         return; // ideally reroute for home
+    //     }
+    //     const prev_liked = isLiked;
+    //     const prev_like_count = likeCount;
 
-        let error;
+    //     let error;
 
-        // update the liked state so changes show up
-        setLiked(!prev_liked);
-        console.log(`state like ${isLiked}; prev_liked ${prev_liked}`);
+    //     // update the liked state so changes show up
+    //     setLiked(!prev_liked);
+    //     console.log(`state like ${isLiked}; prev_liked ${prev_liked}`);
 
-        if (prev_liked) {
-            setLikeCount(likeCount-1);
-            error = await unlikePost(supabase, { user_id, post_id });
-        } 
-        else {
-            setLikeCount(likeCount+1);
-            error = await likePost(supabase, { user_id, post_id });
-        }
+    //     if (prev_liked) {
+    //         setLikeCount(likeCount-1);
+    //         error = await unlikePost(supabase, { user_id, post_id });
+    //     } 
+    //     else {
+    //         setLikeCount(likeCount+1);
+    //         error = await likePost(supabase, { user_id, post_id });
+    //     }
 
-        if(error) {setLiked(prev_liked); setLikeCount(prev_like_count)} //If there is a problem with the liked db, reset the liked status
-    }
+    //     if(error) {setLiked(prev_liked); setLikeCount(prev_like_count)} //If there is a problem with the liked db, reset the liked status
+    // }
 
 
             // const { data: pfp_storage_obj } = supabase.storage
@@ -229,14 +230,15 @@ export default function Feed(){
 
                     <div className="flex flex-row gap-4 px-4 py-4 text-sm">
                         {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
-                        <button onClick={() => handleLike(post.id)}>
-                            {isLiked ?
-                                <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
-                                <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
-                            }
-                        </button>
-                        
-                        <div>{likeCount} likes</div>
+                            {/* <button onClick={() => handleLike(post.id)}>
+                                {isLiked ?
+                                    <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
+                                    <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
+                                }
+                            </button>
+                            
+                            <div>{likeCount} likes</div> */}
+                        <PostLikeButton supabase={supabase} post_id={post.id} like_count={post.like_count} initial_liked={post.is_liked} />
                         
                         {/* <div>comment button</div> */}
                         <Link href={`/app/p/${post.id}`} aria-label="Open post">
