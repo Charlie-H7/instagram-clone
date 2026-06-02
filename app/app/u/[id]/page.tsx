@@ -5,16 +5,16 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 
+
+
+
+
 export default async function Profiles({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-
-
-
-
+    const { id } = await params;
     
     const supabase = await createClient();
     const {data: user_data} = await supabase.auth.getUser(); // is needed for rendering based on if its your profile
@@ -47,13 +47,12 @@ export default async function Profiles({
                     </div>
                 </div>
             </div>
-
+            { user_data.user?.id === id ?
                 <div className="flex flex-row gap-2">
-                    {/* <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"> */}
-                        <Link href="/app/settings" className="bg-blue-500 text-white py-2 px-4 rounded-md transition hover:bg-gray-700">Edit Profile</Link>
-                    {/* </button> */}
+                    <Link href="/app/settings" className="bg-blue-500 text-white py-2 px-4 rounded-md transition hover:bg-gray-700">Edit Profile</Link>
                     <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">hallo 2</button>
-                </div>
+                </div> : null
+            }
         </div>
     );
 }

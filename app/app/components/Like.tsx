@@ -44,7 +44,7 @@ export default function PostLikeButton( {supabase, post_id, like_count, initial_
         }
 
     return(
-        <div>
+        <div className="flex flex-row gap-4 items-center text-sm">
             <button onClick={handleLike}>
                 {isLiked ?
                     <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
