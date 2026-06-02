@@ -1,11 +1,17 @@
 // PlusButton.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Plus } from "lucide-react";
 
 export default function CreatePost() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -18,7 +24,7 @@ export default function CreatePost() {
         <Plus size={20} />
       </button>
 
-      {open && (
+      {open && mounted && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-6">
           <div
             className="absolute inset-0"
@@ -43,7 +49,8 @@ export default function CreatePost() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );
