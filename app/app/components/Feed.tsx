@@ -196,7 +196,8 @@ export default function Feed(){
                     {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
                     <div className="flex flex-row items-center">
                         <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                            <Link href={`/app/u/${post.username}`} className="">
+                            {/* <Link href={`/app/u/${post.username}`} className=""> */}
+                            <Link href={`/app/u/${post.user_id}`} className="">
                                 <Image
                                     src={supabase.storage.from("pfp").getPublicUrl(post.pfp_path).data.publicUrl}
                                     alt={`${post.username} pfp`}

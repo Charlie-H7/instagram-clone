@@ -8,19 +8,19 @@ import Link from "next/link";
 export default async function Profiles({
   params,
 }: {
-  params: Promise<{ username: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { username } = await params;
+  const { id } = await params;
 
 
 
 
     
     const supabase = await createClient();
-    const {data: user_data} = await supabase.auth.getUser();
+    const {data: user_data} = await supabase.auth.getUser(); // is needed for rendering based on if its your profile
     
     // const {data: {user}} = await supabase.auth.getUser();
-    const {data: profile} = await supabase.from("users").select("name, username, pfp_path").eq("id", user_data.user?.id).single();
+    const {data: profile} = await supabase.from("users").select("name, username, pfp_path").eq("id", id).single();
     if(!profile || !user_data){
         return;
     }
@@ -39,7 +39,7 @@ export default async function Profiles({
                     {/* {user?.} */}
                     <span>{profile.name}</span>
                     {/* <span>{profile.username}</span> */}
-                    <span>{username}</span>
+                    <span>{profile.username}</span>
                     <div className="flex flex-row">
                         <div># Posts</div>
                         <div># followers</div>

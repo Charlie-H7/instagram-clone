@@ -38,7 +38,7 @@ export default async function Sidebar( { /*username*/ } ){
     }
     
 
-    const profile_path = `/app/u/${profile?.username}`;
+    const profile_path = `/app/u/${data.user?.id}`;
         
     return(
         <div className="min-h-screen">
