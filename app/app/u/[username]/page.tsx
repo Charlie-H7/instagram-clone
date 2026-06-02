@@ -5,7 +5,17 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Profiles(){
+export default async function Profiles({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}) {
+  const { username } = await params;
+
+
+
+
+    
     const supabase = await createClient();
     const {data: user_data} = await supabase.auth.getUser();
     
@@ -28,7 +38,8 @@ export default async function Profiles(){
                 <div className="flex flex-col">
                     {/* {user?.} */}
                     <span>{profile.name}</span>
-                    <span>{profile.username}</span>
+                    {/* <span>{profile.username}</span> */}
+                    <span>{username}</span>
                     <div className="flex flex-row">
                         <div># Posts</div>
                         <div># followers</div>
