@@ -4,6 +4,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "../app/components/LogoutButton";
 import { Plus } from "lucide-react";
+
+import CreatePost from "./CreatePost";
 /*
 The Server Component is the “cheat code”
 
@@ -52,7 +54,8 @@ export default async function Sidebar( { /*username*/ } ){
                     <Link href={profile_path} className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</Link>
                     {/* <Link href */}
                     {/* need on click to pull up a screen here for creating a post, I imagine that its going to have to be like a client component */}
-                    <Plus />
+                    {/* <Plus /> */}
+                    <CreatePost />
                 </nav>
 
                 <div className="mt-auto">
