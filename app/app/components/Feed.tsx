@@ -184,7 +184,7 @@ export default function Feed(){
             >
             {posts.map((post) => (
                 
-                <div className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
+                <div key={post.id} className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
 
                     {/* {console.log("shize")}
                     {console.log(posts)} */}
@@ -196,14 +196,16 @@ export default function Feed(){
                     {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
                     <div className="flex flex-row items-center">
                         <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                            <Image
-                                src={supabase.storage.from("pfp").getPublicUrl(post.pfp_path).data.publicUrl}
-                                alt={`${post.username} pfp`}
-                                fill
-                                className="object-cover"
-                                />
-                        </div>
-                        <div className="items-center">{post.username}</div>
+                            <Link href={`/app/u/${post.username}`} className="">
+                                <Image
+                                    src={supabase.storage.from("pfp").getPublicUrl(post.pfp_path).data.publicUrl}
+                                    alt={`${post.username} pfp`}
+                                    fill
+                                    className="object-cover"
+                                    />
+                            </Link>
+                            </div>
+                            <div className="items-center">{post.username}</div>
                     </div>
                     {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
                     {/* <div className="relative w-full h-[32rem] bg-slate-100"> */}

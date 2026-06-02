@@ -43,7 +43,8 @@ export default async function Sidebar( { /*username*/ } ){
     return(
         <div className="min-h-screen">
             <aside className="fixed left-0 top-0 h-screen w-20 bg-gray-800 text-white p-4 flex flex-col">
-                <h2 className="text-2xl font-bold mb-6">Logo</h2>
+                {/* <h2 className="text-2xl font-bold mb-6">Logo</h2> */}
+                <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Logo</Link>
                 <nav className="space-y-2">
                     <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a>
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a> */}
