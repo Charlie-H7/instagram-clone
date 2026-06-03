@@ -61,6 +61,7 @@ export default async function AppLayout({
             <Sidebar/>
 
             <main className="flex-1 ml-20 px-6">
+                {/* <div className="w-full max-w-4xl mx-auto"> */}
                 <div className="w-full max-w-md mx-auto">
                     {children}
                     {modal}

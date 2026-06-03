@@ -29,9 +29,12 @@ export default async function PostPage({
   const { id } = await params;
   const supabase = await createClient();
   return (
-    <div className="fixed inset-0 flex flex-none flex-col items-center justify-center mx-auto">
-        <Post post_id={id}/>
-        {/* <Post post_id={id}/> */}
+    // <div className="min-h-screen flex flex-col items-center justify-center mx-auto p-6">
+    // <div className="absolute max-w-5xl flex items-center justify-center min-h-screen w-full mx-auto ">
+  <div className="min-h-screen flex justify-center p-6">
+    <div className="w-full max-w-5xl">
+        <Post post_id={id} />
+      </div>
     </div>
     // <div className="p-10">
     //   <h1 className="text-2xl font-bold">FULL PAGE POST</h1>
