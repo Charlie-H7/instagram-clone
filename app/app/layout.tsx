@@ -57,16 +57,19 @@ export default async function AppLayout({
 
     // console.log(user);
     return (
-        <div className="min-h-screen flex justify-center border border-blue-500">
+        <>
+        <div className="min-h-screen flex flex-1 justify-center border border-blue-500">
             <Sidebar/>
-
-            <main className="flex-1 ml-20 px-6">
+            {/* <main className="flex-1 ml-20 px-6"> */}
+            <main className="flex-none mx-auto">
                 {/* <div className="w-full max-w-4xl mx-auto"> */}
-                <div className="w-full max-w-md mx-auto">
+                {/* <div className="w-full max-w-md mx-auto"> */}
+                <div className="w-full">
                     {children}
                     {modal}
                 </div>
             </main>
         </div>
+        </>
     );
 }

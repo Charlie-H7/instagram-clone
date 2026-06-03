@@ -17,7 +17,8 @@ export default async function Home(){
     console.log("/app");
     return(
         // <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full bg-red-500">
-        <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full">
+        // <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full ">
+        <div className="flex flex-col flex-none justify-center items-center gap-2 max-w-4xl w-full ">
             {/* max-w-[630px] */}
             {/* {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} user_id={entry.user_id} image_path={entry.image_path}/>) */}
             <Feed />
