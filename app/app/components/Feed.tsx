@@ -163,7 +163,7 @@ export default function Feed(){
             // console.log(post_public_url)
 
     return(
-        <div className="w-full">
+        <div className="w-full border-4 border-green-500">
             <InfiniteScroll
                 dataLength={posts.length}
                 next={loadMorePosts}
@@ -184,7 +184,7 @@ export default function Feed(){
             >
             {posts.map((post) => (
                 
-                <div key={post.id} className="w-full max-w-3xl mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
+                <div key={post.id} className="w-full mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm border-4 border-yellow-500">
 
                     {/* {console.log("shize")}
                     {console.log(posts)} */}

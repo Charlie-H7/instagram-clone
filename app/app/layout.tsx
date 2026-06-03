@@ -58,12 +58,11 @@ export default async function AppLayout({
     // console.log(user);
     return (
         <>
-        <div className="min-h-screen flex flex-1 justify-center border border-blue-500">
+        <div className="min-h-screen flex justify-center border-4 border-red-500">
             <Sidebar/>
             {/* <main className="flex-1 ml-20 px-6"> */}
-            <main className="flex-none max-w-4xl mx-auto">
-                {/* <div className="w-full max-w-4xl mx-auto"> */}
-                {/* <div className="w-full max-w-md mx-auto"> */}
+            {/* mx-auto would never work below, for margins to work the element would need a constrained width (to kinda push out {like a reference}) */}
+            <main className="flex-1">
                 <div className="w-full">
                     {children}
                     {modal}

@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server"
 import { fetchFeedPosts } from "@/lib/posts";
 import Feed from "./components/Feed";
 
-// import {  }
 
 export default async function Home(){
     const supabase = await createClient();
@@ -18,10 +17,14 @@ export default async function Home(){
     return(
         // <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full bg-red-500">
         // <div className="flex flex-col flex-0 justify-center items-center gap-2 w-full ">
-        <div className="flex flex-col flex-none justify-center items-center gap-2 max-w-4xl w-full ">
-            {/* max-w-[630px] */}
-            {/* {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} user_id={entry.user_id} image_path={entry.image_path}/>) */}
-            <Feed />
+        // <div className="flex flex-col flex-none justify-center items-center gap-2 max-w-7xl w-full border-4 border-blue-500">
+        <div className="">
+            <div className="flex flex-col gap-2 justify-center items-center max-w-md lg:max-w-xl w-full mx-auto border-4 border-blue-500">
+            {/* // <div className="flex flex-col gap-2 w-full"> */}
+                {/* max-w-[630px] */}
+                {/* {data?.map( (entry) => (<Feed key={entry.id} username={entry.username} user_id={entry.user_id} image_path={entry.image_path}/>) */}
+                <Feed />
+            </div>
         </div>
     )
 }

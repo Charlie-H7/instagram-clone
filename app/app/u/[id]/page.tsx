@@ -29,7 +29,7 @@ export default async function Profiles({
     // console.log(data);
     // console.log("Hallo");
     return(
-        <div className="flex flex-col space-y-12">
+        <div className="flex flex-col space-y-12 max-w-md mx-auto">
             <div className="flex flex-row flex-wrap items-start gap-8 pt-8">
                 <div className="rounded-full w-20 h-20 relative overflow-hidden">
                     <Image src={pfpPublicUrl} alt={`${profile.username}: pfp`} fill/>

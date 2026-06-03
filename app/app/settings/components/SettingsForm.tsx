@@ -288,7 +288,7 @@ export default function SettingsForm({
     }
 
     return (
-        <div className="mx-auto">
+        <div className="max-w-md mx-auto">
             <div className="flex flex-col mt-8">
                 <h1>Edit profile</h1>
 
