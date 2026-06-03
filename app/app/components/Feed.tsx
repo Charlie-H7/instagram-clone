@@ -106,7 +106,7 @@ export default function Feed(){
     },[supabase]);
 
     useEffect(() => {
-    // Reset state whenever post_id or supabase changes,
+    // Reset state whenever supabase changes,
     // then fetch the first page of comments.
     setPosts([]);
     setPage(0);
@@ -115,10 +115,10 @@ export default function Feed(){
     fetchPosts(0);
     }, [fetchPosts]);
 
-  const loadMorePosts = async () => {
-    if (!hasMore || loadingMore) return;
-    await fetchPosts(page);
-  };
+    const loadMorePosts = async () => {
+        if (!hasMore || loadingMore) return;
+        await fetchPosts(page);
+    };
 
     // make state updates before async functions to prevent like the 
     // async function handleLike(post_id: string) {

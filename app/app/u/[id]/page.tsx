@@ -15,7 +15,6 @@ export default async function Profiles({
   params: Promise<{ id: string }>;
 }) {
     const { id } = await params;
-    
     const supabase = await createClient();
     const {data: user_data} = await supabase.auth.getUser(); // is needed for rendering based on if its your profile
     
