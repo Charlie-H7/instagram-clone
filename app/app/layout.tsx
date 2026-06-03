@@ -61,7 +61,7 @@ export default async function AppLayout({
         <div className="min-h-screen flex flex-1 justify-center border border-blue-500">
             <Sidebar/>
             {/* <main className="flex-1 ml-20 px-6"> */}
-            <main className="flex-none mx-auto">
+            <main className="flex-none max-w-4xl mx-auto">
                 {/* <div className="w-full max-w-4xl mx-auto"> */}
                 {/* <div className="w-full max-w-md mx-auto"> */}
                 <div className="w-full">
