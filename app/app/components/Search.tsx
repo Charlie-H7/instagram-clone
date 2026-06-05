@@ -19,7 +19,7 @@ export default function Search(){
     useEffect (() => {
         // const fetchSearch = async () => { // need to set a timer instead for debounce
         const timerSearch = setTimeout(async () => { // Make a fetch here on supabase based on 'query that is updated'
-            const { data } = await supabase.from("users").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
+            const { data } = await supabase.from("users").select("id, name, username, pfp_path").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
             // return (data ? (data) : []);
             setSearchResults(data || []);}, 300)
 
@@ -67,8 +67,18 @@ export default function Search(){
                                     Close
                                 </button>
                             </div>
-                            <input type="text" className="bg-gray-400 rounded-md" onChange={(e) => setQuery(e.target.value)}/>
-                            {searchResults ? console.log(searchResults) : (null)}
+                            <input type="text" className="bg-gray-400 rounded-md mb-2" onChange={(e) => setQuery(e.target.value)}/>
+                            {/* {searchResults ? console.log(searchResults) : (null)} */}
+                            {/* Make the results sit below */}
+                            {searchResults.map((user) => (
+                                <div className="flex gap-2 rounded-md border border-primary-border hover:bg-gray-200/20">
+                                    <div>img_here</div>
+                                    <div key={user.id} className="flex flex-col ">
+                                        <div>{user.username}</div>
+                                        <div>{user.name}</div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                     </div>
