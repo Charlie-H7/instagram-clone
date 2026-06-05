@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Search as SearchIcon } from "lucide-react"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
@@ -9,10 +9,25 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 export default function Search(){
     const supabase = useMemo(() => (createBrowserSupabaseClient()), []);
     const [query, setQuery] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<any[]>([]); // For now; get a type later after I know what data im fetching
     const [open, setOpen] = useState<boolean>(false);
     
     //Okay so i need an async function for querying useEffect -> calls it
-    
+
+
+
+    useEffect (() => {
+        const fetchSearch = async () => {
+            // Make a fetch here on supabase based on 'query that is updated'
+            const { data } = await supabase.from("users").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
+            // return (data ? (data) : []);
+            setSearchResults(data || [])
+        }
+        // setSearchResults(fetchSearch()); // doesnt like this bc cant await
+        fetchSearch();
+    },[query, supabase]);
+
+    // Need like a timer function that prevents this from running on every change
 
     return(
         // <div className="fixed inset-0 max-w-5xl p-6">
