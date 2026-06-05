@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "../app/components/LogoutButton";
 import { Plus } from "lucide-react";
+import Search from "../app/components/Search"
 
 import CreatePost from "./CreatePost";
 /*
@@ -48,7 +49,8 @@ export default async function Sidebar( { /*username*/ } ){
                 {/* <h2 className="text-2xl font-bold mb-6">Logo</h2> */}
                 <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Logo</Link>
                 <nav className="space-y-2">
-                    <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a>
+                    {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a> */}
+                    <Search />
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a> */}
                     <Link href="/app/settings" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</Link>
                     <Link href={profile_path} className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</Link>
