@@ -72,7 +72,7 @@ export default function Page() {
 
   return (
     <div className="max-w-xl mx-auto">
-    {console.log(`Dom Count ${count}`)}
+    {/* {console.log(`Dom Count ${count}`)} */}
       <h1>Count: {count}</h1>
 
       <button onClick={handleClick}>
