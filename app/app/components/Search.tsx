@@ -4,10 +4,12 @@ import { useMemo, useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Search as SearchIcon } from "lucide-react"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation";
 
 
 export default function Search(){
     const supabase = useMemo(() => (createBrowserSupabaseClient()), []);
+    const router = useRouter();
     const [query, setQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]); // For now; get a type later after I know what data im fetching
     const [open, setOpen] = useState<boolean>(false);
@@ -71,7 +73,7 @@ export default function Search(){
                             {/* {searchResults ? console.log(searchResults) : (null)} */}
                             {/* Make the results sit below */}
                             {searchResults.map((user) => (
-                                <div className="flex gap-2 rounded-md border border-primary-border hover:bg-gray-200/20">
+                                <div className="flex gap-2 rounded-md border border-primary-border hover:bg-gray-200/20" onClick={() => {setOpen(false); router.push(`/app/u/${user.id}`)}}>
                                     <div>img_here</div>
                                     <div key={user.id} className="flex flex-col ">
                                         <div>{user.username}</div>
