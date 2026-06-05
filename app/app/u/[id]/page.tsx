@@ -4,6 +4,7 @@
 import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
+import FollowButton from "../components/FollowButton";
 
 
 
@@ -17,13 +18,17 @@ export default async function Profiles({
     const { id } = await params;
     const supabase = await createClient();
     const {data: user_data} = await supabase.auth.getUser(); // is needed for rendering based on if its your profile
-    
+       
+    if (!user_data?.user) {
+    return;
+    }
+     
     // const {data: {user}} = await supabase.auth.getUser();
-    const {data: profile} = await supabase.from("users").select("name, username, pfp_path").eq("id", id).single();
-    if(!profile || !user_data){
+    const {data: profile} = await supabase.from("user_profiles").select("*").eq("id", id).single(); // replace with migration of view on users+following -> add col is following as bool 
+    if(!profile ){
         return;
     }
-
+ 
     //Get the image
     const pfpPublicUrl = supabase.storage.from("pfp").getPublicUrl(profile.pfp_path).data.publicUrl;
     // console.log(data);
@@ -46,11 +51,13 @@ export default async function Profiles({
                     </div>
                 </div>
             </div>
-            { user_data.user?.id === id ?
+            {/* { user_data.user?.id === id ? */}
+            { user_data.user.id === id ?
                 <div className="flex flex-row gap-2">
                     <Link href="/app/settings" className="bg-blue-500 text-white py-2 px-4 rounded-md transition hover:bg-gray-700">Edit Profile</Link>
                     <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">hallo 2</button>
-                </div> : null
+                {/* {/* </div> : <FollowButton is_following={profile.is_following} follower_id={profile.id} following_id={user_data.user.id}/>  */}
+                 </div> : <FollowButton is_following={profile.is_following} follower_id={user_data.user.id} following_id={profile.id}/> 
             }
         </div>
     );

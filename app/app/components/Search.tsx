@@ -21,7 +21,7 @@ export default function Search(){
     useEffect (() => {
         // const fetchSearch = async () => { // need to set a timer instead for debounce
         const timerSearch = setTimeout(async () => { // Make a fetch here on supabase based on 'query that is updated'
-            const { data } = await supabase.from("users").select("id, name, username, pfp_path").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
+            const { data } = await supabase.from("user_profiles").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
             // return (data ? (data) : []);
             setSearchResults(data || []);}, 300)
 
@@ -31,9 +31,9 @@ export default function Search(){
         return () => clearTimeout(timerSearch);
     },[query, supabase]);
 
-//     useEffect(() => {
-//     console.log(searchResults);
-// }, [searchResults]);
+    useEffect(() => {
+    console.log(searchResults);
+}, [searchResults]);
     // Need like a timer function that prevents this from running on every change
 
     return(
@@ -73,9 +73,9 @@ export default function Search(){
                             {/* {searchResults ? console.log(searchResults) : (null)} */}
                             {/* Make the results sit below */}
                             {searchResults.map((user) => (
-                                <div className="flex gap-2 rounded-md border border-primary-border hover:bg-gray-200/20" onClick={() => {setOpen(false); router.push(`/app/u/${user.id}`)}}>
+                                <div key={user.id} className="flex gap-2 rounded-md border border-primary-border hover:bg-gray-200/20" onClick={() => {setOpen(false); router.push(`/app/u/${user.id}`)}}>
                                     <div>img_here</div>
-                                    <div key={user.id} className="flex flex-col ">
+                                    <div className="flex flex-col ">
                                         <div>{user.username}</div>
                                         <div>{user.name}</div>
                                     </div>
