@@ -17,16 +17,21 @@ export default function Search(){
 
 
     useEffect (() => {
-        const fetchSearch = async () => {
-            // Make a fetch here on supabase based on 'query that is updated'
+        // const fetchSearch = async () => { // need to set a timer instead for debounce
+        const timerSearch = setTimeout(async () => { // Make a fetch here on supabase based on 'query that is updated'
             const { data } = await supabase.from("users").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
             // return (data ? (data) : []);
-            setSearchResults(data || [])
-        }
+            setSearchResults(data || []);}, 300)
+
+        
         // setSearchResults(fetchSearch()); // doesnt like this bc cant await
-        fetchSearch();
+        // fetchSearch();
+        return () => clearTimeout(timerSearch);
     },[query, supabase]);
 
+//     useEffect(() => {
+//     console.log(searchResults);
+// }, [searchResults]);
     // Need like a timer function that prevents this from running on every change
 
     return(
@@ -63,6 +68,7 @@ export default function Search(){
                                 </button>
                             </div>
                             <input type="text" className="bg-gray-400 rounded-md" onChange={(e) => setQuery(e.target.value)}/>
+                            {searchResults ? console.log(searchResults) : (null)}
                         </div>
                     </div>
                     </div>
