@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import FollowButton from "../components/FollowButton";
+import ProfilePosts from "../components/ProfilePosts";
 
 
 
@@ -61,7 +62,7 @@ export default async function Profiles({
                  </div> : <FollowButton is_following={profile.is_following} follower_id={user_data.user.id} following_id={profile.id}/> 
             }
             <div>
-                {  }
+                <ProfilePosts user_id={id} />
             </div>
         </div>
     );
