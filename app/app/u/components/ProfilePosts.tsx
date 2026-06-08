@@ -2,6 +2,7 @@
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useState, useEffect, useCallback, useMemo, DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
+import Image from "next/image"
 
 // This will be an infinite scroll for fetching posts on the user page
 type ProfilePostProps = {
@@ -74,6 +75,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
 
     // Get profile post from supabase and edit them
     return(
+
         <InfiniteScroll 
         next={loadMorePosts}
         hasMore={hasMore}
@@ -85,26 +87,100 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
           </p>
         }
         // Use the wrapper div as the scrollable container.
-        scrollableTarget="comment-scrollable"
+        scrollableTarget="post-scrollable"
         style={{ overflow: "hidden" }}
         >
-            
-            <div className="flex flex-col gap-4">
-            {posts.map((post) => (
-                <div
-                    key={post.id}
-                    className="border border-slate-200 rounded-lg p-4 bg-white shadow-sm"
-                >
-                    <p className="text-sm text-slate-800">
-                        {post.id}
-                    </p>
+            <div className="max-w-xl mx-auto grid grid-cols-3 gap-1">
+  {posts.map((post) => (
+    <div
+      key={post.id}
+      className="relative aspect-square"
+    >
+    <Image
+        src={
+            supabase.storage
+                .from("posts")
+                .getPublicUrl(post.image_path)
+                .data.publicUrl
+        }
+        alt="Post"
+        fill
+        className="object-cover"
+      />
+    </div>
+    
+    // <article
+    //   key={post.id}
+    //   className="bg-white border border-slate-200 rounded-lg overflow-hidden"
+    // >
+    //   {/* Header */}
+    //   <div className="flex items-center gap-3 p-3">
+    //     <div className="w-8 h-8 rounded-full bg-slate-300" />
+    //     <span className="font-medium text-sm">
+    //       username
+    //     </span>
+    //   </div>
 
-                    <div className="mt-2 text-xs text-slate-500">
-                        {new Date(post.date).toLocaleString()}
-                    </div>
-                </div>
-            ))}
-            </div>
+    //   {/* Image */}
+    //   <div className="relative aspect-square">
+    //     <Image
+    //       src={
+    //         supabase.storage
+    //           .from("posts")
+    //           .getPublicUrl(post.image_path)
+    //           .data.publicUrl
+    //       }
+    //       alt=""
+    //       fill
+    //       className="object-cover"
+    //     />
+    //   </div>
+
+    //   {/* Actions */}
+    //   <div className="flex gap-4 p-3">
+    //     ❤️
+    //     💬
+    //     📤
+    //   </div>
+
+    //   {/* Caption */}
+    //   <div className="px-3 pb-3">
+    //     <p className="text-sm">
+    //       <span className="font-semibold mr-2">
+    //         username
+    //       </span>
+    //       Caption here...
+    //     </p>
+    //   </div>
+
+    //   {/* Date */}
+    //   <div className="px-3 pb-3 text-xs text-slate-500">
+    //     {new Date(post.date).toLocaleDateString()}
+    //   </div>
+    // </article>
+  ))}
+</div>
+            
+                                    {/* <div className="flex flex-col gap-4">
+                                    {posts.map((post) => (
+                                        <div
+                                            key={post.id}
+                                            className="border border-slate-200 rounded-lg p-4 bg-white shadow-sm"
+                                        >
+                                            <p className="text-sm text-slate-800">
+                                                {post.id}
+                                            </p>
+                                            <div className="relative w-full h-[32rem] bg-slate-100">
+                                                <Image src={supabase.storage.from("posts").getPublicUrl(post.image_path).data.publicUrl} 
+                                                alt="Post image" fill className="" />
+                                            </div>
+
+                                            <div className="mt-2 text-xs text-slate-500">
+                                                {new Date(post.date).toLocaleString()}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    </div> */}
         </InfiniteScroll>
     );
     
