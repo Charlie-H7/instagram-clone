@@ -15,15 +15,16 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
     const supabase = useMemo( () => createBrowserSupabaseClient(), [] )
     const [posts, setPosts] = useState<any[]>([])
     const [page, setPage] = useState(0)
-    const [initialPage, setInitialPage] = useState<boolean>(true); // boolean to tell us if it is the first page to render
-    const [loadingMore, setLoadingMore] = useState<boolean>(false); // Bool to tell us if its not initial render (i mean I could just check by !initial render no? well whatever)
     const [hasMore, setHasMore] = useState<boolean>(false); // tell us if there is more pages that can be rendered
 
+    const [initialPage, setInitialPage] = useState<boolean>(true); // boolean to tell us if it is the first page to render
+    const [loadingMore, setLoadingMore] = useState<boolean>(false); // Bool to tell us if its not initial render (i mean I could just check by !initial render no? well whatever)
+
     const fetchPosts = useCallback(async (next_page: number) =>{
-        if (next_page === 0) setInitialPage(true)
+        if (next_page === 0) setInitialPage(true);
         else {
-            setInitialPage(false);
             setLoadingMore(true); 
+            setInitialPage(false);
         }
         // fetch posts here
         const row_from = next_page * PAGE_SIZE;
@@ -39,14 +40,21 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
             //     const temp = next_page === 0 ? data : [...posts, data];
             //     return (temp);
             // })
-            setPosts(prev => next_page === 0 ? data : [...prev, ...data]);
+            // setPosts(prev => next_page === 0 ? data : [...prev, ...data]);
+
+            setPosts( (prev) => { // hmmm, should note down array extension
+                // const temp =  data ? [...prev, ...data];
+                const temp = next_page === 0 ? data : [...prev, ...data];
+                return(temp);
+            });
             
             // After fetching from the table we have to check if there is potentially more to fetch from each
-            setHasMore(data.length === PAGE_SIZE)
+            setHasMore(data.length === PAGE_SIZE && data.length > 0)
             setPage(next_page + 1);
         }
         setInitialPage(false);
         setLoadingMore(false);
+        return;
      },[supabase, user_id])
 
      // what I would like is for the purpose of resseting state if the user visits a new profile page 
@@ -62,7 +70,8 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         setPage(0);
         setHasMore(true);
         fetchPosts(0);
-    }, [user_id]);
+    // }, [user_id]);
+    }, [fetchPosts]);
 
 
     const loadMorePosts = async () => {
@@ -87,7 +96,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
           </p>
         }
         // Use the wrapper div as the scrollable container.
-        scrollableTarget="post-scrollable"
+        scrollableTarget="comment-scrollable"
         style={{ overflow: "hidden" }}
         >
             <div className="max-w-xl mx-auto grid grid-cols-3 gap-1">
