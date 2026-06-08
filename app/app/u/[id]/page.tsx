@@ -18,7 +18,8 @@ export default async function Profiles({
     const { id } = await params;
     const supabase = await createClient();
     const {data: user_data} = await supabase.auth.getUser(); // is needed for rendering based on if its your profile
-       
+    
+
     if (!user_data?.user) {
     return;
     }
@@ -59,6 +60,9 @@ export default async function Profiles({
                 {/* {/* </div> : <FollowButton is_following={profile.is_following} follower_id={profile.id} following_id={user_data.user.id}/>  */}
                  </div> : <FollowButton is_following={profile.is_following} follower_id={user_data.user.id} following_id={profile.id}/> 
             }
+            <div>
+                {  }
+            </div>
         </div>
     );
 }
