@@ -3,6 +3,7 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
+import Link from "next/link"
 
 // This will be an infinite scroll for fetching posts on the user page
 type ProfilePostProps = {
@@ -102,11 +103,12 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         }
         style={{ overflow: "hidden" }}
         >
-            <div className="max-w-xl mx-auto grid grid-cols-3 gap-1">
+            <div className="max-w-4xl mx-auto grid grid-cols-4 gap-1 mt-6">
                 {posts.map((post) => (
                     <div
                     key={post.id}
-                    className="relative aspect-square"
+                    // className="relative aspect-square"
+                    className="relative aspect-[9/16]"
                     >
                         <Image
                             src={
