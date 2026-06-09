@@ -1,6 +1,6 @@
 "use client"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
-import { useState, useEffect, useCallback, useMemo, DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
 
@@ -30,7 +30,12 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         const row_from = next_page * PAGE_SIZE;
         const row_to = row_from + PAGE_SIZE - 1
         
-        const { data, error } = await supabase.from("feed_posts").select("*").eq("user_id", user_id).range(row_from, row_to);
+        const { data, error } = await supabase
+            .from("posts")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("date", { ascending: false })
+            .range(row_from, row_to);
         if(error){
             throw new Error(error.message);
         }
@@ -84,7 +89,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
 
     // Get profile post from supabase and edit them
     return(
-    <div id="post-scrollable" className="h-full overflow-y-auto pr-1">
+    <div className="pr-1">
         <InfiniteScroll 
         next={loadMorePosts}
         hasMore={hasMore}
@@ -92,11 +97,9 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         loader={(<div>Loading Posts</div>)}
         endMessage={
           <p className="py-4 text-center text-sm text-slate-500">
-            No more comments.
+            No more posts.
           </p>
         }
-        // Use the wrapper div as the scrollable container.
-        scrollableTarget="comment-scrollable"
         style={{ overflow: "hidden" }}
         >
             <div className="max-w-xl mx-auto grid grid-cols-3 gap-1">
