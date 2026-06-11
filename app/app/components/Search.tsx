@@ -5,6 +5,7 @@ import { createPortal } from "react-dom"
 import { Search as SearchIcon } from "lucide-react"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation";
+import { searchUsers } from "@/lib/searchUsers";
 
 
 export default function Search(){
@@ -21,7 +22,8 @@ export default function Search(){
     useEffect (() => {
         // const fetchSearch = async () => { // need to set a timer instead for debounce
         const timerSearch = setTimeout(async () => { // Make a fetch here on supabase based on 'query that is updated'
-            const { data } = await supabase.from("user_profiles").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
+            // const { data } = await supabase.from("user_profiles").select("*").ilike('username', `%${query}%`).limit(5); // does a substring search for usernames that start with 'query'
+            const data = await searchUsers(supabase, query);
             // return (data ? (data) : []);
             setSearchResults(data || []);}, 300)
 

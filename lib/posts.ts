@@ -63,7 +63,7 @@ export async function fetchFeedPosts(supabase: SupabaseClient){
     
     if(error){
         console.log(error.message);
-        return;
+        return error;
     }
     return data;
 }
@@ -74,7 +74,7 @@ export async function fetchPostById(supabase: SupabaseClient, id: string){
 
     if(error){
         console.log(error.message);
-        return;
+        return error;
     }
 
     return(data);
