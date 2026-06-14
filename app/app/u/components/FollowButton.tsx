@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import { followUser } from "@/lib/supabase/followUsers";
+import { unfollowUser } from "@/lib/supabase/unfollowUser";
 
 type FollowingButtonProps = {
     is_following: boolean,
@@ -20,42 +22,6 @@ export default function FollowButton({is_following, follower_id, following_id}: 
     // might just need to get the user directly might be something diff
     // const { data: { user } } =  supabase.auth.getUser();
 
-    // const follower_id = user_id;
-    // const following_id = user_id;
-    
-
-    // const handleFollow = async () => {
-    //     // Optimistically assume db action goes through
-    //     if(!busy){
-    //         setBusy(true);
-    //         if(isFollowing){ // user is already following them
-    //             setIsFollowing(false);
-    //             const { error } = await supabase.from("following").delete().eq("following_id", following_id).eq("follower_id", follower_id);
-                
-    //             if(error){
-    //                 setIsFollowing(true);
-    //                 console.log(`Error unfollowing to db, ${error.message}`)
-    //             }
-    //         } else if(!isFollowing){ // user is not following them
-    //             setIsFollowing(true)
-    //             const { error } = await supabase
-    //             .from("following")
-    //             .insert({
-    //                 follower_id,
-    //                 following_id
-    //             });
-
-    //             if(error){
-    //                 setIsFollowing(false);
-    //                 console.log(`Error following to db, ${error.message}`)
-    //             }
-    //         }
-    //         setBusy(false);
-    //     }
-    //     else{
-    //         console.log("FOR THE LOVE OF GOD PLEASE FUCKING WAIT AND STOP SPAMMING MY FUCKING BUTTON")
-    //     }
-    // }
     const handleFollow = async () => {
         if (busy) return;
 
