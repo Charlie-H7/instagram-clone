@@ -32,32 +32,22 @@ export default function FollowButton({is_following, follower_id, following_id}: 
                 // optimistic UI update
                 setIsFollowing(false);
 
-                const { error } = await supabase
-                    .from("following")
-                    .delete()
-                    .eq("following_id", following_id)
-                    .eq("follower_id", follower_id);
-
-                // rollback if DB fails
-                if (error) {
+                try {
+                    await unfollowUser(supabase, follower_id, following_id);
+                } catch (error) {
+                    console.error("Error unfollowing user:", error); // lol does this even work
                     setIsFollowing(true);
-                    console.log(`Error unfollowing to db, ${error.message}`);
+                    // console.log(`Error unfollowing to db`);
                 }
             } else {
                 // optimistic UI update
                 setIsFollowing(true);
 
-                const { error } = await supabase
-                    .from("following")
-                    .insert({
-                        follower_id,
-                        following_id
-                    });
-
-                // rollback if DB fails
-                if (error) {
+                try {
+                    await followUser(supabase, follower_id, following_id);
+                } catch (error) {
+                    console.error("Error following user:", error);
                     setIsFollowing(false);
-                    console.log(`Error following to db, ${error.message}`);
                 }
             }
         } catch (err) {
@@ -70,11 +60,6 @@ export default function FollowButton({is_following, follower_id, following_id}: 
     };
 
     return(
-        // <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-        // onClick={
-        // >
-        // hallo 2
-        // </button>
         <div>
             {isFollowing 
             ? <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" onClick={handleFollow}>Unfollow</button> 

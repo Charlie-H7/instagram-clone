@@ -4,8 +4,8 @@ const tsJestTransformCfg = createDefaultPreset().transform;
 
 /** @type {import("jest").Config} **/
 module.exports = {
-  // testEnvironment: "node",
-  testEnvironment: "jsdom",
+  testEnvironment: "node", // For like backend tests (uncomment for whichever)
+  // testEnvironment: "jsdom", // For react component test
   transform: {
     ...tsJestTransformCfg,
   },
