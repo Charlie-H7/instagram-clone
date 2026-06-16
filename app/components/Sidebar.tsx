@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "../app/components/LogoutButton";
-import { Plus } from "lucide-react";
+import { Plus, Settings, User, Home } from "lucide-react";
 import Search from "../app/components/Search"
 
 import CreatePost from "./CreatePost";
@@ -44,16 +44,42 @@ export default async function Sidebar( { /*username*/ } ){
     const profile_path = `/app/u/${data.user?.id}`;
         
     return(
-        <div className="min-h-screen">
-            <aside className="fixed left-0 top-0 h-screen w-20 bg-gray-800 text-white p-4 flex flex-col">
+        <div className="min-h-screen z-50">
+            {/* <aside className="fixed md:bottom-0 left-0 top-0 h-screen w-20 bg-gray-800 text-white p-4 flex flex-col"> */}
+            <aside className="
+                fixed bottom-0 left-0 w-full h-16
+                flex flex-row items-center justify-around
+
+                md:top-0 md:left-0 md:h-screen md:w-20
+                md:flex-col md:justify-start
+
+                bg-gray-800 text-white p-4 
+            ">
+            {/* <aside className="
+                    fixed bottom-0 left-0
+                    w-full h-16
+                    flex flex-row items-center justify-around
+
+                    md:top-0 md:right-0 md:left-auto
+                    md:h-screen md:w-20
+                    md:flex-col md:justify-start
+
+                    bg-gray-800 text-white
+                "> */}
                 {/* <h2 className="text-2xl font-bold mb-6">Logo</h2> */}
-                <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Logo</Link>
+                <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+                    <Home size={20}/>
+                </Link>
                 <nav className="space-y-2">
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a> */}
                     <Search />
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a> */}
-                    <Link href="/app/settings" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</Link>
-                    <Link href={profile_path} className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Profile</Link>
+                    <Link href="/app/settings" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+                        <Settings size={20}/>
+                    </Link>
+                    <Link href={profile_path} className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
+                        <User size={20}/>
+                    </Link>
                     {/* <Link href */}
                     {/* need on click to pull up a screen here for creating a post, I imagine that its going to have to be like a client component */}
                     {/* <Plus /> */}
