@@ -70,7 +70,7 @@ export default async function Sidebar( { /*username*/ } ){
                 <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
                     <Home size={20}/>
                 </Link>
-                <nav className="space-y-2">
+
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a> */}
                     <Search />
                     {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a> */}
@@ -84,9 +84,9 @@ export default async function Sidebar( { /*username*/ } ){
                     {/* need on click to pull up a screen here for creating a post, I imagine that its going to have to be like a client component */}
                     {/* <Plus /> */}
                     <CreatePost />
-                </nav>
 
-                <div className="mt-auto">
+
+                <div className="hidden md:block md:mt-auto">
                     {/* <a href="#" className="block px-4 py-2 text-sm text-slate-400">Logout</a> */}
                     <LogoutButton />
                 </div>
