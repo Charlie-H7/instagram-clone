@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { followUser } from "@/lib/supabase/followUsers";
 import { unfollowUser } from "@/lib/supabase/unfollowUser";

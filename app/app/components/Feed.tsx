@@ -3,9 +3,8 @@
 import { useCallback, useMemo, useState, useEffect } from "react"
 import Image from "next/image";
 import Link from "next/link";
-import { PostRow,PostFetch } from "@/lib/posts";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
-import { Heart, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import PostLikeButton from "./Like";
@@ -43,12 +42,7 @@ const PAGE_SIZE = 10;
 // export default function Feed({id: post_id, username, image_path, pfp_path, like_count, is_liked, user_id}: PostFetch){
 export default function Feed(){
     const supabase = useMemo( () => createBrowserSupabaseClient(), []);
-    // const user_id = {async () => await supabase.auth.getUser().data.id}
-    // const [isLiked, setLiked] = useState<boolean>(is_liked);
-    // const [likeCount, setLikeCount] = useState<number>(like_count);
-    const [isLiked, setLiked] = useState<boolean>(false);
-    const [likeCount, setLikeCount] = useState<number>(0);
-
+    
     // InfiniteScroll
     const [page, setPage] = useState<number>(0); // the current page
     const [posts, setPosts] = useState<FeedTypes[]>([]); // get a specific typing/data struct later
@@ -57,10 +51,9 @@ export default function Feed(){
         // Posts loading trackers
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    // const [error, setError] = useState<string | null>(null);
 
-    // const obj = map
-    // make a storage object for supabase
+
     // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
     const fetchPosts = useCallback( async (nextPage: number) => {  // not too sure what the hell the parameter is in this case... like self referential im guessing like .this
         // Check if it is the first page to render
@@ -111,7 +104,7 @@ export default function Feed(){
     setPosts([]);
     setPage(0);
     setHasMore(true);
-    setError(null);
+    // setError(null);
     fetchPosts(0);
     }, [fetchPosts]);
 

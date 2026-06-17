@@ -18,7 +18,7 @@
 
 // import PostModal from "../../@modal/components/PostModal";
 import Post from "../../@modal/components/Post";
-import { createClient } from "@/lib/supabase/server";
+// import { createClient } from "@/lib/supabase/server";
 // The main idea is that as this is the default page for the modal on refresh
 // copy infinite scroll and everything but for one page as opposed to modal
 export default async function PostPage({
@@ -27,10 +27,8 @@ export default async function PostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
+  // const supabase = await createClient();
   return (
-    // <div className="min-h-screen flex flex-col items-center justify-center mx-auto p-6">
-    // <div className="absolute max-w-5xl flex items-center justify-center min-h-screen w-full mx-auto ">
   <div className="min-h-screen flex justify-center p-6">
     <div className="w-full max-w-5xl">
         <Post post_id={id} />

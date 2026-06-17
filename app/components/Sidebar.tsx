@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "../app/components/LogoutButton";
-import { Plus, Settings, User, Home } from "lucide-react";
+import { Settings, User, Home } from "lucide-react";
 import Search from "../app/components/Search"
 
 import CreatePost from "./CreatePost";

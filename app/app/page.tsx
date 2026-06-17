@@ -9,8 +9,8 @@ export default async function Home(){
 
     // const { data: profile } = await (await supabase).from("posts") // replace with a fetch helper
     const data = await fetchFeedPosts(supabase);
-    const { data: user_data } = await supabase.auth.getUser();
-    const user_id = user_data.user!.id;
+    // const { data: user_data } = await supabase.auth.getUser();
+    // const user_id = user_data.user!.id;
 
     console.log(data);
     console.log("/app");

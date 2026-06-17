@@ -33,7 +33,7 @@ export default function SettingsForm({
     const [pfp, setPfp] = useState(profile.pfp_url);
 
     const [err, setError] = useState(false);
-    const [message, setMessage] = useState("");
+    // const [message, setMessage] = useState(""); // used in tandem with error messages; I get it but lowkey a forehead. well, live and learn huh
 
     async function handlePfpSubmit(file: File) {
         const {

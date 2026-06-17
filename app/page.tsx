@@ -1,6 +1,3 @@
-import Image from "next/image";
-
-
 import ApplicationShell from "./components/ApplicationShell";
 
 

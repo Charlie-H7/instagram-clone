@@ -1,11 +1,11 @@
 "use client"
 // import primary so that i can color div background with it
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 // Importing db functions
-import { userSignUp, userUpdate, userDelete } from "@/lib/users";
+import { userSignUp } from "@/lib/users";
 
 type shellPropTypes = {
     supabase: SupabaseClient;

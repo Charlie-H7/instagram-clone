@@ -3,7 +3,7 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
-import Link from "next/link"
+
 
 // This will be an infinite scroll for fetching posts on the user page
 type ProfilePostProps = {

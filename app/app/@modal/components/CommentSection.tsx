@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
-import { SupabaseClient } from "@supabase/supabase-js";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 type CommentRow = {

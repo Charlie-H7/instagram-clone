@@ -1,11 +1,10 @@
 "use client"
 
-import { use, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import AuthPanel from "../components/AuthPanel"
-import Application from "./Application"
-import { create } from "domain";
-import { useRouter, useSearchParams } from "next/navigation";
+// import Application from "./Application"
+import { useRouter } from "next/navigation";
 
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";

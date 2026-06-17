@@ -1,12 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState, useMemo } from "react";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { useEffect, useState, useMemo } from "react";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { fetchPostById } from "@/lib/posts";
 import Image from "next/image";
 import CommentSection from "./CommentSection";
-import { PostRow } from "@/lib/posts";
 import { addNewComment } from "@/lib/comments"; // pushes new comment to the database
 
 type CommentRow = {
@@ -60,6 +58,7 @@ export default function Post({ post_id }: PostProps) {
 
 
         const error = await addNewComment(supabase, {post_id, user_id, comment})
+        if(error) console.log(error.message);
     }
 
     useEffect(() => {
@@ -80,22 +79,6 @@ export default function Post({ post_id }: PostProps) {
         .from("posts")
         .getPublicUrl(data.image_path);
 
-        /* <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
-
-    {/* COMMENTS (takes remaining space, scrolls) }
-    <div className="flex-1 overflow-y-auto pr-1">
-        <CommentSection supabase={supabase} post_id={post_id} />
-    </div>
-
-    {/* POST INFO (always below comments) }
-    <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
-        <div className="text-lg font-semibold text-slate-100" tabIndex={0}>
-        {data.username}
-        </div>
-        <p className="mt-2 text-sm text-slate-300">{data.caption}</p>
-    </div>
-
-    </div> */
     const public_post_url = post_storage_obj.publicUrl;
 
     return (
@@ -108,20 +91,11 @@ export default function Post({ post_id }: PostProps) {
 
             <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
             {/* HERE */}
-            {/* {commentsList ? commentsList.map((comment) => (
-                // <div key={}>
-                <div >
-                    <div>{comment.date}</div>
-                    <div>{comment.comment}</div>
-                </div>
-                )): (null)} */}
-            {/* HERE */}
             {/* COMMENTS (takes remaining space, scrolls) */}
             <div className="flex-1 overflow-y-auto pr-1">
                 <div className="space-y-4 pb-4">
                     {commentsList ? commentsList.map((comment) => (
-                    // <div key={}>
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4">
+                    <div key={(crypto.randomUUID())} className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4">
                         <div>{comment.date}</div>
                         <div>{comment.comment}</div>
                     </div>
