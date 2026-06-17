@@ -127,7 +127,7 @@ if (login)
 
             {/* I dont want the lhs to appear if the screen is too small so let tailwind handle it if that is the case */}
             <div className="hidden text-3xl font-bold lg:flex flex-1 flex-col items-center justify-center border-2 border-red-500">
-                Don't be a stranger! Make new friends and share your experiences with the world!
+                Don&apos;t be a stranger! Make new friends and share your experiences with the world!
             </div>
 
             {/* <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-green-500 bg-primary font-['Helvetica'] gap-6">
@@ -143,7 +143,7 @@ if (login)
                     <label>Password</label>
                     <input required type="password" value={password} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
                     <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Log In</button>
-                    <button type="button" onClick={() => setMode("signup")}>Don't have an account? Create an account!</button>
+                    <button type="button" onClick={() => setMode("signup")}>Don&apos;t have an account? Create an account!</button>
                 </form>
             </div>
         </div>
@@ -153,7 +153,7 @@ if (login)
         return(
             <div className="flex flex-row border-2 border-red-500 w-full h-full min-h-[calc(100vh-4rem)]">
                 <div className="hidden text-3xl font-bold lg:flex flex-1 flex-col items-center justify-center border-2 border-red-500">
-                    Don't be a stranger! Make new friends and share your experiences with the world!
+                    Don&apos;t be a stranger! Make new friends and share your experiences with the world!
                 </div>
 
                 <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-red-500 bg-primary font-['Helvetica'] gap-6 px-6">

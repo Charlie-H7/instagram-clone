@@ -41,12 +41,6 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
             throw new Error(error.message);
         }
         if(data){
-            // Assume theres an on click that changes the page object
-            // setPosts( () => {
-            //     const temp = next_page === 0 ? data : [...posts, data];
-            //     return (temp);
-            // })
-            // setPosts(prev => next_page === 0 ? data : [...prev, ...data]);
 
             setPosts( (prev) => { // hmmm, should note down array extension
                 // const temp =  data ? [...prev, ...data];
