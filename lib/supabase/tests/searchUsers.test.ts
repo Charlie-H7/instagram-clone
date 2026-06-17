@@ -1,4 +1,4 @@
-import { searchUsers } from "./searchUsers";
+import { searchUsers } from "@/lib/searchUsers";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 const mockSupabase = {
