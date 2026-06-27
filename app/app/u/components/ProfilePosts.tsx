@@ -23,7 +23,8 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
     const [initialPage, setInitialPage] = useState<boolean>(true); // boolean to tell us if it is the first page to render
     const [loadingMore, setLoadingMore] = useState<boolean>(false); // Bool to tell us if its not initial render (i mean I could just check by !initial render no? well whatever)
 
-    const fetchPosts = useCallback(async (next_page: number) =>{
+    const fetchPosts = useCallback(async (next_page: number) =>{ // Technically holds a closure on state vars, however works with updated param vars so it doesnt matter
+        console.log(`either im stupid or the robot is ${page}`);
         if (next_page === 0) setInitialPage(true);
         else {
             setLoadingMore(true); 
@@ -67,6 +68,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
     //     setHasMore(true);
     //     fetchPosts(0);
     // },[fetchPosts])
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         setPosts([]);
         setPage(0);

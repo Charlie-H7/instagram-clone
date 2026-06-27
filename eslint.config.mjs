@@ -9,9 +9,16 @@ const eslintConfig = defineConfig([
     files: ["jest.config.js"],
     rules:{
         "@typescript-eslint/no-require-imports": "off",
+        // "eslint-disable-next-line react-hooks/set-state-in-effect" // Used for ignoring stateSetters in useEffect needed for infiniteScroll
       },
   },
 
+  {
+    files: ["@/app/app/u/components/ProfilePosts.tsx"],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
