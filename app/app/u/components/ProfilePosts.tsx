@@ -3,6 +3,7 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
+import { PostFetch } from "@/lib/posts"
 
 
 // This will be an infinite scroll for fetching posts on the user page
@@ -10,11 +11,12 @@ type ProfilePostProps = {
     user_id: string;
 }
 
+
 const PAGE_SIZE = 10; // Load 10 posts per page
 export default function ProfilePosts({user_id}: ProfilePostProps){
     // State
     const supabase = useMemo( () => createBrowserSupabaseClient(), [] )
-    const [posts, setPosts] = useState<any[]>([])
+    const [posts, setPosts] = useState<PostFetch[]>([])
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState<boolean>(false); // tell us if there is more pages that can be rendered
 

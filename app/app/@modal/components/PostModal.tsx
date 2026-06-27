@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 // import Image from "next/image";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import Post from "./Post";

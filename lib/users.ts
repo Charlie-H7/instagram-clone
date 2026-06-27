@@ -22,18 +22,19 @@ export type UserRow = {
 };
 
 export type UserInsert = {
-  name: string;
-  username: string;
-  bio?: string | null;
-  is_private?: boolean;
+    id: string;
+    name: string;
+    username: string;
+    bio?: string | null;
+    is_private?: boolean;
 };
 
 // Used for setting changes
 export type UserUpdate = {
-  name?: string;
-  bio?: string;
-  is_private?: boolean;
-  pfp_path?: Text;
+    name?: string;
+    bio?: string;
+    is_private?: boolean;
+    pfp_path?: string;
 };
 
 type clientTypes = {
@@ -41,7 +42,7 @@ type clientTypes = {
 };
 
 // make the server client
-export async function userSignUp( {supabase} : clientTypes, {id, name, username} : UserRow){
+export async function userSignUp( {supabase} : clientTypes, {id, name, username} : UserInsert){
     const error = await supabase.from("users").insert({
         id,
         name,

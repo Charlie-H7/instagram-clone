@@ -100,7 +100,7 @@ export default function AuthPanel( {supabase, session, authLoading} : shellPropT
         }
 
         // insert profile row into public.users using the authenticated id
-        await userSignUp({ supabase }, { id: userId, name, username } as any);
+        await userSignUp({ supabase }, { id: userId, name, username });
         setMessage('Account created.');
         setBusy(false);
 

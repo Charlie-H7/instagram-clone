@@ -7,12 +7,18 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation";
 import { searchUsers } from "@/lib/searchUsers";
 
+type SearchResults = {
+    id: string;
+    username: string;
+    avatar_url: string;
+    name: string;
+};
 
 export default function Search(){
     const supabase = useMemo(() => (createBrowserSupabaseClient()), []);
     const router = useRouter();
     const [query, setQuery] = useState<string>("");
-    const [searchResults, setSearchResults] = useState<any[]>([]); // For now; get a type later after I know what data im fetching
+    const [searchResults, setSearchResults] = useState<SearchResults[]>([]); // For now; get a type later after I know what data im fetching
     const [open, setOpen] = useState<boolean>(false);
     
     //Okay so i need an async function for querying useEffect -> calls it
