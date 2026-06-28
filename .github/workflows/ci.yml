@@ -19,12 +19,12 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v4 # Checkout the code from our repo
+      - uses: actions/checkout@v9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # Checkout the code from our repo
         with:
           fetch-depth: 2 # Add git history of past 2 pushed repos (for now)
 
 
-      - uses: actions/setup-node@v4 # Set up the Node.js environment
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # Set up the Node.js environment
         with:
           node-version: 22
           cache: npm
@@ -33,7 +33,7 @@ jobs:
       - run: npm ci # still needed after cache as it rebuilds node_modules
       - run: npm run lint
       - name: Super-linter
-        uses: super-linter/super-linter@v8.7.0 # x-release-please-version
+        uses: super-linter/super-linter@4ce20838b8ab83717e78138c5b3a1407148e0918 # x-release-please-version
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -98,3 +98,10 @@ jobs:
   #       uses: super-linter/super-linter@v8.7.0
   #       env:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  #   permissions:
+  #     contents: read
+  #     issues: write
+  #     pull-requests: write
+  #     statuses: write
