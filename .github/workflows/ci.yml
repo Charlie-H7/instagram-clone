@@ -19,7 +19,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # Checkout the code from our repo
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # Checkout the code from our repo
         with:
           fetch-depth: 2 # Add git history of past 2 pushed repos (for now)
 
