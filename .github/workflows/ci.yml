@@ -11,10 +11,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # Permissions
+    permissions: 
+      contents: read
+      pull-requests: write
+      statuses: write
+
+
     steps:
       - uses: actions/checkout@v4 # Checkout the code from our repo
         with:
           fetch-depth: 2 # Add git history of past 2 pushed repos (for now)
+
 
       - uses: actions/setup-node@v4 # Set up the Node.js environment
         with:
@@ -26,6 +34,7 @@ jobs:
       - run: npm run lint
       - name: Super-linter
         uses: super-linter/super-linter@v8.7.0 # x-release-please-version
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #         env:
