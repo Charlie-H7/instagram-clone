@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # Checkout the code from our repo
         with:
-          fetch-depth: 2 # Add git history of past 2 pushed repos (for now)
+          fetch-depth: 0 # Add git history of past 2 pushed repos (for now)
 
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # Set up the Node.js environment
