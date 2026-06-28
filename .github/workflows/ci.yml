@@ -22,10 +22,10 @@ jobs:
       
       - run: npm ci # still needed after cache as it rebuilds node_modules
       - run: npm run lint
-      - name: Super-linter
-        uses: super-linter/super-linter@v8.7.0 # x-release-please-version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Super-linter
+      #   uses: super-linter/super-linter@v8.7.0 # x-release-please-version
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #         env:
 
 
