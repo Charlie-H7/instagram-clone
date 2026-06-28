@@ -62,13 +62,6 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
 
      // what I would like is for the purpose of resseting state if the user visits a new profile page 
      // (This only matters if there is a way to view other users without re-routing)
-    // useEffect(() => {
-    //     setPosts([]);
-    //     setPage(0);
-    //     setHasMore(true);
-    //     fetchPosts(0);
-    // },[fetchPosts])
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         setPosts([]);
         setPage(0);

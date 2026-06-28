@@ -9,6 +9,7 @@ export default function CreatePost() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  // This is used for managing the portal mount state, hydration
   useEffect(() => {
     setMounted(true);
   }, []);

@@ -14,7 +14,7 @@ const eslintConfig = defineConfig([
   },
 
   {
-    files: ["@/app/app/u/components/ProfilePosts.tsx"],
+    files: ["app/app/u/components/ProfilePosts.tsx", "app/components/CreatePost.tsx", "app/app/components/Feed.tsx", "app/app/@modal/components/CommentSection.tsx"], // Add all files that have state setters in useEffect for infiniteScroll
     rules: {
       "react-hooks/set-state-in-effect": "off",
     },
