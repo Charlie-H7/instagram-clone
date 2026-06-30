@@ -35,6 +35,9 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npm run typecheck
+        env:
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}}
+          NEXT_PUBLIC_SUPABASE_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_URL}}
       - name: Super-linter
         uses: super-linter/super-linter@4ce20838b8ab83717e78138c5b3a1407148e0918 # x-release-please-version
 
