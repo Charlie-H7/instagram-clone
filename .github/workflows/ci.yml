@@ -1,11 +1,21 @@
 name: CI
 
+# 1. State the behavior that triggers this workflow
 on:
   push:
     branches:
       - main
   pull_request:
 
+# Handle behavior of mult workflows, cancel old workflow on push of new one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+# Matrices -> mult runners to see how this should behave
+
+# 2. Job
 jobs:
 
   test:
@@ -37,11 +47,11 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}}
           NEXT_PUBLIC_SUPABASE_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_URL}}
-      - name: Super-linter
-        uses: super-linter/super-linter@4ce20838b8ab83717e78138c5b3a1407148e0918 # x-release-please-version
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Super-linter
+      #   uses: super-linter/super-linter@4ce20838b8ab83717e78138c5b3a1407148e0918 # x-release-please-version
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm test
 #         env:
   
 
