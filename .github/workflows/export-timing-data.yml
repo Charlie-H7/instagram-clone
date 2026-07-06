@@ -1,0 +1,28 @@
+# Comment this for right now as I dont really want to set up timing on honeycomb yet. as I want to set up other things first.
+
+# name: "Timing data"
+
+
+# # This workflow runs only when certain jobs run
+# on:
+#   workflow_run:
+#     workflows:
+#       - "ci"
+#     types: [completed]
+
+
+# # jobs, job name, job runner; steps
+# jobs:
+#   otel-cicd-actions:
+#     runs-on: ubuntu-latest
+#     name: "Timing data"
+#     steps: 
+#         - name: "hi"
+#           uses: corentinmusard/otel-cicd-action@f2d88ecf54d9dd3e01ea95e25f93603212ee93d3
+#           with:
+#             otlpEndpoint: grpc://api.honeycomb.io:443/
+#             otlpHeaders: ${{ secrets.OTLP_HEADERS }}
+#             githubToken: ${{ secrets.GITHUB_TOKEN }}
+#             runId: ${{ github.event.workflow_run.id }}
+
+

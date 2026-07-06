@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 # 1. State the behavior that triggers this workflow
 on:
