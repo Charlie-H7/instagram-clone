@@ -1,0 +1,32 @@
+# In order to close stale issues and pull requests, we will use the "actions/stale" GitHub Action. This action will automatically close issues and pull requests that have been inactive for a specified period of time.
+
+name: Stale Issues and PRs
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+  workflow_dispatch:
+
+jobs:
+  close-stale:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Close stale issues and PRs
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 #v10.3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-pr-message: "This pull request is stale because it has been open for 5 days with no activity."
+          stale-pr-label: "Stale"
+          # Configure stale timeouts
+          days-before-issue-stale: -1 # This means issues will never be marked as stale
+          days-before-pr-stale: 5 # This means pull requests will be marked as stale after 5 days of inactivity
+          days-before-close: -1 # This means issues and pull requests will never be closed automatically
+          remove-stale-when-updated: false # This means that if a stale issue or pull request is updated, it will not be removed from the stale state
+
