@@ -20,29 +20,24 @@ export default function FollowButton({is_following, follower_id, following_id}: 
 
     console.log(follower_id);
     // might just need to get the user directly might be something diff
-    // const { data: { user } } =  supabase.auth.getUser();
 
     const handleFollow = async () => {
         if (busy) return;
 
         setBusy(true);
-
         try {
             if (isFollowing) {
                 // optimistic UI update
                 setIsFollowing(false);
-
                 try {
                     await unfollowUser(supabase, follower_id, following_id);
                 } catch (error) {
                     console.error("Error unfollowing user:", error); // lol does this even work
                     setIsFollowing(true);
-                    // console.log(`Error unfollowing to db`);
                 }
             } else {
                 // optimistic UI update
                 setIsFollowing(true);
-
                 try {
                     await followUser(supabase, follower_id, following_id);
                 } catch (error) {

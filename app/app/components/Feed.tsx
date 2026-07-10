@@ -53,8 +53,6 @@ export default function Feed(){
     const [loadingMore, setLoadingMore] = useState<boolean>(false);
     // const [error, setError] = useState<string | null>(null);
 
-
-    // const pfp = { data: storageObj } = supabase.storage.from("pfp") -> to use state maybe (or maybe let, cant be const so  val can change)
     const fetchPosts = useCallback( async (nextPage: number) => {  // not too sure what the hell the parameter is in this case... like self referential im guessing like .this
         // Check if it is the first page to render
         if(nextPage === 0){
@@ -77,9 +75,7 @@ export default function Feed(){
             throw new Error(error.message);
         }
 
-        // add new thing to data
-
-
+        // Add the new posts to the existing posts state
         // if no error then make the post end 
         // Extend posts, by len of PAGE_SIZE
         if(data){    
@@ -113,62 +109,21 @@ export default function Feed(){
         await fetchPosts(page);
     };
 
-    // make state updates before async functions to prevent like the 
-    // async function handleLike(post_id: string) {
-    //     const user_id = (await supabase.auth.getUser()).data.user?.id
-    //     if (!user_id){
-    //         return; // ideally reroute for home
-    //     }
-    //     const prev_liked = isLiked;
-    //     const prev_like_count = likeCount;
-
-    //     let error;
-
-    //     // update the liked state so changes show up
-    //     setLiked(!prev_liked);
-    //     console.log(`state like ${isLiked}; prev_liked ${prev_liked}`);
-
-    //     if (prev_liked) {
-    //         setLikeCount(likeCount-1);
-    //         error = await unlikePost(supabase, { user_id, post_id });
-    //     } 
-    //     else {
-    //         setLikeCount(likeCount+1);
-    //         error = await likePost(supabase, { user_id, post_id });
-    //     }
-
-    //     if(error) {setLiked(prev_liked); setLikeCount(prev_like_count)} //If there is a problem with the liked db, reset the liked status
-    // }
-
-
-            // const { data: pfp_storage_obj } = supabase.storage
-            // .from("pfp")
-            // .getPublicUrl(pfp_path)
-
-            // const { data: post_storage_obj } = supabase.storage
-            // .from("posts")
-            // .getPublicUrl(image_path)
-
-            // // if (error) console.log(error.)
-
-            // const pfp_public_url = pfp_storage_obj.publicUrl;
-            // const post_public_url = post_storage_obj.publicUrl;
-            // console.log(post_public_url)
-
     return(
-        <div className="w-full border-4 border-green-500">
+        // <div className="w-full border-4 border-green-500">
+        <div className="w-full">
             <InfiniteScroll
                 dataLength={posts.length}
                 next={loadMorePosts}
                 hasMore={hasMore}
                 loader={
                 <div className="py-4 text-center text-sm text-slate-400">
-                    Loading more comments...
+                    Loading more posts...
                 </div>
                 }
                 endMessage={
                 <p className="py-4 text-center text-sm text-slate-500">
-                    No more comments.
+                    No more posts.
                 </p>
                 }
                 // Use the wrapper div as the scrollable container.
@@ -177,19 +132,10 @@ export default function Feed(){
             >
             {posts.map((post) => (
                 
-                <div key={post.id} className="w-full mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm border-4 border-yellow-500">
-
-                    {/* {console.log("shize")}
-                    {console.log(posts)} */}
-
-
-                    {/* <div>{user_id}</div> */}
-                    {/* <div>{image_path}</div> */}
-                    {/* <div>{pfp_path}</div> */}
-                    {/* <Image src={pfp_public_url} alt={`${username} pfp`} className="w-16 h-16 rounded-full object-cover" fill/> */}
+                // <div key={post.id} className="w-full mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm border-4 border-yellow-500">
+                <div key={post.id} className="w-full mx-auto mb-8 overflow-hidden border border-slate-200 shadow-sm">
                     <div className="flex flex-row items-center">
                         <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                            {/* <Link href={`/app/u/${post.username}`} className=""> */}
                             <Link href={`/app/u/${post.user_id}`} className="">
                                 <Image
                                     src={supabase.storage.from("pfp").getPublicUrl(post.pfp_path).data.publicUrl}
@@ -198,61 +144,28 @@ export default function Feed(){
                                     className="object-cover"
                                     />
                             </Link>
-                            </div>
-                            <div className="items-center">{post.username}</div>
+                        </div>
+                        <div className="items-center">{post.username}</div>
                     </div>
                     {/* The best course here would be to make the table private to prevent serving images with urls but for right now you have access to all data */}
-                    {/* <div className="relative w-full h-[32rem] bg-slate-100"> */}
                     <div className="relative w-full h-[32rem] bg-slate-100">
-                        {/* <Image src={post_public_url} alt="Post image" fill className="object-cover" /> */}
-                        {/* <Image src={post_public_url} alt="Post image" fill className="" /> */}
                         <Image 
                             src={supabase.storage.from("posts").getPublicUrl(post.image_path).data.publicUrl} 
                             alt="Post image" fill className="" />
                     </div>
 
-                    {/* Post widgets */}
-                    {/* <div className="flex flex-row gap-4 px-4 py-4 text-sm text-slate-700">
-                        <div>like icon with on click</div>
-                        <div>{like_count}</div>
-                        <div>comment button</div>
-                        <div>Bookmark</div>
-                    </div> */}
-                    {/* Post widgets */}
-
-
-
                     {/* Updated post widgets */}
-
-                    <div className="flex flex-row gap-4 px-4 py-4 text-sm">
-                        {/* <div>{is_liked ? "❤️" : "🤍"}</div> */}
-                            {/* <button onClick={() => handleLike(post.id)}>
-                                {isLiked ?
-                                    <Heart className="w-7 h-7 fill-red-500 text-primary-border hover:text-slate-100"/> :
-                                    <Heart className="w-7 h-7 text-primary-border hover:text-slate-100"/>
-                                }
-                            </button>
-                            
-                            <div>{likeCount} likes</div> */}
+                    <div className="flex flex-row gap-4 px-4 py-4 text-sm items-center">
                         <PostLikeButton supabase={supabase} post_id={post.id} like_count={post.like_count} initial_liked={post.is_liked} />
-                        
-                        {/* <div>comment button</div> */}
-                        <Link href={`/app/p/${post.id}`} aria-label="Open post">
-                            <MessageCircle />
-                        </Link>
-                        <div>Comment</div>
-                        <div>Bookmark</div>
+                            <Link href={`/app/p/${post.id}`} aria-label="Open post">
+                                <MessageCircle className="text-primary-border hover:text-slate-100"/>
+                            </Link>
+                            <div>Comment</div> 
+                        <div>Impl Bookmark tk</div>
                     </div>
-
-                    {/* // widget like comment + bookmark; as row
-                    // top comment section col */}
                 </div>
             ))}
             </InfiniteScroll>
         </div>
     );
 }
-
-// check how the styling changes
-// add more db entries
-// routing on sidebar -> done!!

@@ -84,8 +84,11 @@ export default function SettingsForm({
 
     return (
         <div className="w-full px-4 py-6 sm:px-6">
-            <div className="mx-auto w-full max-w-2xl overflow-x-hidden rounded-2xl border border-blue-500/60 p-4 sm:p-6">
-                <div className="mt-2 flex flex-col gap-4 border border-green-500/60 p-2 sm:p-4">
+            {/* <div className="mx-auto w-full max-w-2xl overflow-x-hidden rounded-2xl border border-blue-500/60 p-4 sm:p-6"> */}
+                {/* <div className="mt-2 flex flex-col gap-4 border border-green-500/60 p-2 sm:p-4"> */}
+            <div className="mx-auto w-full max-w-2xl overflow-x-hidden rounded-2xl p-4 sm:p-6">
+                <div className="mt-2 flex flex-col gap-4 p-2 sm:p-4">
+                
                     <h1 className="text-xl font-semibold">Edit profile</h1>
 
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
