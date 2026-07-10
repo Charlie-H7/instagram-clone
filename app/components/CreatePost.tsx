@@ -57,7 +57,10 @@ export default function CreatePost() {
 
         // Reroute to p/[id] from 'id' of posts table supabase
         if (post) {
-            router.push(`/p/${post.id}`);
+            setOpen(false);
+            // setMounted(false);
+            router.push(`app/p/${post.id}`);
+            setPostImage(null);
         }
         console.log("Reached here 3"); // Lol ideally it shouldn't get here
 
