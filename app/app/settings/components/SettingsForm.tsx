@@ -83,91 +83,91 @@ export default function SettingsForm({
     }
 
     return (
-        <div className="max-w-md w-full mx-auto">
-            <div className="flex flex-col mt-8">
-                <h1>Edit profile</h1>
+        <div className="w-full px-4 py-6 sm:px-6">
+            <div className="mx-auto w-full max-w-2xl overflow-x-hidden rounded-2xl border border-blue-500/60 p-4 sm:p-6">
+                <div className="mt-2 flex flex-col gap-4 border border-green-500/60 p-2 sm:p-4">
+                    <h1 className="text-xl font-semibold">Edit profile</h1>
 
-                <div className="flex gap-8 items-center">
-                    <img
-                        src={pfp}
-                        alt="profile picture"
-                        className="w-16 h-16 rounded-full object-cover"
-                    />
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={pfp}
+                                alt="profile picture"
+                                className="h-16 w-16 rounded-full object-cover"
+                            />
 
-                    <div className="flex flex-col">
-                        <div>{name}</div>
-                        <div>{username}</div>
+                            <div className="min-w-0">
+                                <div className="font-medium">{name}</div>
+                                <div className="truncate text-sm text-slate-600">
+                                    {username}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex min-w-0 flex-col gap-2">
+                            <label className="text-sm font-medium" htmlFor="imageUpload">
+                                Select an image:
+                            </label>
+
+                            <input
+                                type="file"
+                                id="imageUpload"
+                                name="imageUpload"
+                                accept="image/*"
+                                className="w-full max-w-full text-sm"
+                                onChange={(e) => {
+                                    const selectedFile =
+                                        e.target.files?.[0];
+
+                                    if (selectedFile) {
+                                        handlePfpSubmit(selectedFile);
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label htmlFor="imageUpload">
-                            Select an image:
-                        </label>
+                    <form
+                        className="mt-2 flex flex-col gap-4"
+                        onSubmit={async (e) => {
+                            e.preventDefault();
 
-                        <input
-                            type="file"
-                            id="imageUpload"
-                            name="imageUpload"
-                            accept="image/*"
-                            onChange={(e) => {
-                                const selectedFile =
-                                    e.target.files?.[0];
-
-                                if (selectedFile) {
-                                    handlePfpSubmit(
-                                        selectedFile
-                                    );
-                                }
-                            }}
-                        />
-                    </div>
-                </div>
-
-                <form
-                    className="mt-6"
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-
-                        const hasError =
-                            await userUpdate(
+                            const hasError = await userUpdate(
                                 { supabase },
                                 { bio }
                             );
 
-                        setError(hasError);
-                    }}
-                >
-                    <div className="flex flex-col gap-2">
-                        <div>Change Bio</div>
-
-                        <textarea
-                            value={bio}
-                            onChange={(e) => {
-                                setBio(e.target.value);
-                            }}
-                            className="bg-gray-200 text-gray-700 placeholder:text-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                            setError(hasError);
+                        }}
                     >
-                        Submit
-                    </button>
-                </form>
-            </div>
+                        <div className="flex flex-col gap-2">
+                            <div className="font-medium">Change Bio</div>
 
-            <div className="mt-4">
-                {!err ? (
-                    <div>
-                        Your profile has been submitted
-                    </div>
-                ) : (
-                    <div>
-                        Something wrong has occurred.
-                    </div>
-                )}
+                            <textarea
+                                value={bio}
+                                onChange={(e) => {
+                                    setBio(e.target.value);
+                                }}
+                                className="min-h-[120px] w-full max-w-full resize-y rounded-md border border-gray-300 bg-gray-200 px-3 py-2 text-gray-700 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="mt-2 rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                </div>
+
+                <div className="mt-4 text-sm">
+                    {!err ? (
+                        <div>Your profile has been submitted</div>
+                    ) : (
+                        <div>Something wrong has occurred.</div>
+                    )}
+                </div>
             </div>
         </div>
     );
