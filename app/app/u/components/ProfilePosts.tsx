@@ -43,7 +43,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         if(error){
             throw new Error(error.message);
         }
-        if(data){
+        if(data) {
 
             setPosts( (prev) => { // hmmm, should note down array extension
                 // const temp =  data ? [...prev, ...data];
@@ -58,7 +58,7 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         setInitialPage(false);
         setLoadingMore(false);
         return;
-     },[supabase, user_id])
+    },[supabase, user_id])
 
      // what I would like is for the purpose of resseting state if the user visits a new profile page 
      // (This only matters if there is a way to view other users without re-routing)
@@ -76,9 +76,6 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         await fetchPosts(page);
     }
 
-    
-    // const { data } = supabase.from("feed_posts").select()
-
     // Get profile post from supabase and edit them
     return(
     <div className="pr-1">
@@ -88,9 +85,9 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
         dataLength={posts.length}
         loader={(<div>Loading Posts</div>)}
         endMessage={
-          <p className="py-4 text-center text-sm text-slate-500">
+        <p className="py-4 text-center text-sm text-slate-500">
             No more posts.
-          </p>
+        </p>
         }
         style={{ overflow: "hidden" }}
         >
@@ -113,14 +110,11 @@ export default function ProfilePosts({user_id}: ProfilePostProps){
                             className="object-cover"
                         />
                     </div>
-        
                 ))}
-        </div>
-
+            </div>
             
         </InfiniteScroll>
-        </div>
-
+    </div>
     );
     
 }

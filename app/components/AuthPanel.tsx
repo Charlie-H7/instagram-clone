@@ -115,7 +115,7 @@ if (login)
 
         <div className="flex flex-row border-2 border-red-500 w-full h-full min-h-[calc(100vh-4rem)]">
 
-
+            {/* TODO: Add image here later If I ever feel not lazy enough to go back to start */}
             {/* Image LHS tk
             {/* if screen size lg then put img otherwise put nothing /}
             {typeof window !== "undefined" && window.innerWidth >= 1024 && (
@@ -129,11 +129,6 @@ if (login)
             <div className="hidden text-3xl font-bold lg:flex flex-1 flex-col items-center justify-center border-2 border-red-500">
                 Don&apos;t be a stranger! Make new friends and share your experiences with the world!
             </div>
-
-            {/* <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-green-500 bg-primary font-['Helvetica'] gap-6">
-                <div className="text-2xl font-bold text-start mx-auto">Login</div>
-                <form action="" className="flex flex-col gap-4 w-full lg:max-w-[calc(100%-2rem)] mx-auto border-1 border-blue-500"> */}
-
             {/* Just added left padding instead of trying to fight with margins */}
             <div className="flex flex-1 flex-col items-start justify-center lg:max-w-1/2 lg:w-full border-2 border-red-500 bg-primary font-['Helvetica'] gap-6 px-6">
                 <div className="text-xl font-bold text-start">Login</div>
@@ -175,12 +170,11 @@ if (login)
                 </div>
             </div>
         )
-    // supabase.from().select()
 }
 
-
-// hmmm so now that I ideally have signup "working" I need to think about how I could actually send over my states to the database and when
-// 1. figure out how a user is stored in auth
-// 2. figure out how a user can send to the db
+// I know now :) -> refer to other routes to see supa.getUser()
+    // hmmm so now that I ideally have signup "working" I need to think about how I could actually send over my states to the database and when
+    // 1. figure out how a user is stored in auth
+    // 2. figure out how a user can send to the db
 
 // https://nextjs.org/docs/app/api-reference/functions/use-router

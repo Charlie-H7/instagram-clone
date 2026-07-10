@@ -13,13 +13,7 @@ type CommentRow = {
   date: string;
 };
 
-// type PostProps = {
-//   supabase: SupabaseClient;
-//   post_id: string;
-// };
-
 type PostProps = {
-//   supabase: SupabaseClient;
   post_id: string;
 };
 
@@ -83,47 +77,31 @@ export default function Post({ post_id }: PostProps) {
 
     return (
         <div className="max-w-5xl w-full h-[80vh] relative flex flex-col lg:flex-row overflow-hidden rounded-3xl bg-slate-950/80 shadow-xl">
-        <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
-            <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
-        </div>
-
-            {/* Here */}
-
+            <div className="w-full lg:w-1/2 relative min-h-[22rem] aspect-square">
+                <Image src={public_post_url} fill alt={`Post by ${data.username}`} className="object-cover" />
+            </div>
             <div className="w-full lg:w-1/2 flex flex-col bg-slate-950/90 p-4">
-            {/* HERE */}
-            {/* COMMENTS (takes remaining space, scrolls) */}
-            <div className="flex-1 overflow-y-auto pr-1">
-                <div className="space-y-4 pb-4">
-                    {commentsList ? commentsList.map((comment) => (
-                    <div key={(crypto.randomUUID())} className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4">
-                        <div>{comment.date}</div>
-                        <div>{comment.comment}</div>
+                {/* Comments You Create */}
+                <div className="flex-1 overflow-y-auto pr-1">
+                    <div className="space-y-4 pb-4">
+                        {commentsList ? commentsList.map((comment) => (
+                        <div key={(crypto.randomUUID())} className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4">
+                            <div>{comment.date}</div>
+                            <div>{comment.comment}</div>
+                        </div>
+                        )): (null)}
                     </div>
-                    )): (null)}
+                    {/* Fetches comments from Supabase: Infinite Scroll */}
+                    <CommentSection post_id={post_id} />
                 </div>
-                {/* <CommentSection supabase={supabase} post_id={post_id} /> */}
-                <CommentSection post_id={post_id} />
-            </div>
-
-            {/* POST INFO (always below comments) */}
-            <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
-                {/* <div className="text-lg font-semibold text-slate-100">
-                {data.username}
+                {/* Comment Form */}
+                <div className="shrink-0 mt-4 rounded-3xl border border-slate-800 bg-slate-900/90 p-4">
+                    <form onSubmit={handleAddComment}>
+                        <textarea required placeholder="Write a comment..." className="w-full" onChange={(e)=>{setComment(e.target.value);}}></textarea>
+                        <button type="submit">Post</button>
+                    </form>
                 </div>
-                <p className="mt-2 text-sm text-slate-300">{data.caption}</p> */}
-                <form onSubmit={handleAddComment}>
-                    <textarea required placeholder="Write a comment..." className="w-full" onChange={(e)=>{setComment(e.target.value);}}></textarea>
-                    <button type="submit">Post</button>
-                </form>
             </div>
-
-            </div>
-
-
         </div>
     );
 }
-// To do
-// 1. on submit send to db
-// 2. default for page (non modal to work) => should be the same thing for now (this method of comments is temporary as I'm not to sure on the approach for timers)
-// 3. infinite scroll on Posts

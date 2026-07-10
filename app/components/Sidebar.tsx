@@ -49,45 +49,24 @@ export default async function Sidebar( { /*username*/ } ){
             <aside className="
                 fixed bottom-0 left-0 w-full h-16
                 flex flex-row items-center justify-around
-
                 md:top-0 md:left-0 md:h-screen md:w-20
                 md:flex-col md:justify-start
-
                 bg-gray-800 text-white p-4 
             ">
-            {/* <aside className="
-                    fixed bottom-0 left-0
-                    w-full h-16
-                    flex flex-row items-center justify-around
-
-                    md:top-0 md:right-0 md:left-auto
-                    md:h-screen md:w-20
-                    md:flex-col md:justify-start
-
-                    bg-gray-800 text-white
-                "> */}
+                {/* TODO: Design a logo and replace it with component '<Home />' if I don't feel lazy*/}
                 {/* <h2 className="text-2xl font-bold mb-6">Logo</h2> */}
                 <Link href="/app/" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
                     <Home size={20}/>
                 </Link>
-
-                    {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Search</a> */}
                     <Search />
-                    {/* <a href="#" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">Settings</a> */}
                     <Link href="/app/settings" className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
                         <Settings size={20}/>
                     </Link>
                     <Link href={profile_path} className="block py-2.5 px-4 rounded transition hover:bg-gray-700">
                         <User size={20}/>
                     </Link>
-                    {/* <Link href */}
-                    {/* need on click to pull up a screen here for creating a post, I imagine that its going to have to be like a client component */}
-                    {/* <Plus /> */}
                     <CreatePost />
-
-
                 <div className="hidden md:block md:mt-auto">
-                    {/* <a href="#" className="block px-4 py-2 text-sm text-slate-400">Logout</a> */}
                     <LogoutButton />
                 </div>
             </aside>

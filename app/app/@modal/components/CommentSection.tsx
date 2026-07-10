@@ -9,11 +9,6 @@ type CommentRow = {
   date: string;
 };
 
-// type PostProps = {
-//   supabase: SupabaseClient;
-//   post_id: string;
-// };
-
 type PostProps = {
   post_id: string;
 };
@@ -48,7 +43,6 @@ export default function CommentSection({post_id}: PostProps) {
       } else {
         setLoadingMore(true);
       }
-
       // Calculate the row range for the Supabase paginated query.
       const from = nextPage * PAGE_SIZE;
       const to = from + PAGE_SIZE - 1;
@@ -101,7 +95,6 @@ export default function CommentSection({post_id}: PostProps) {
     setError(null);
     fetchComments(0);
   }, [fetchComments]);
-//   }, []);
 
   const loadMoreComments = async () => {
     if (!hasMore || loadingMore) return;
